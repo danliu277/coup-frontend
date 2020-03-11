@@ -1,0 +1,1 @@
+export const setUserActionCreator = (user) => ({type: 'SETUSER', user});

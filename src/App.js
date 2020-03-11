@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import Register from './components/register'
+import RoomContainer from './containers/roomContainer';
 
-function App() {
+function App(props) {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route path="/rooms" component={() => {
+          if(props.user)
+            return <RoomContainer />
+          else
+            return <Redirect to="/" />
+        }}/>
+        <Route path="/" component={(routerProps) => <Register {...routerProps} />}/>
+        <Route render={() => <Redirect to="/" />} />
+      </Switch>
     </div>
   );
 }
 
-export default App;
+const msp = state => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(msp)(App);
