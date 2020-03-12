@@ -15,7 +15,7 @@ const JoinRoomModal = ({show, handleClose, room, joinRoom}) => {
                 <Modal.Title>Join Room</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form>
+                <form onSubmit={handleJoin}>
                     <label>Room Name: {room && room.name}</label>
                     <br />
                     <label>Password:</label>

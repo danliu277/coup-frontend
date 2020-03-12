@@ -18,7 +18,7 @@ const CreateRoomModal = ({show, handleClose, createRoom}) => {
                 <Modal.Title>Create Room</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form>
+                <form onSubmit={handleCreate}>
                     <label>Room Name:</label>
                     <input value={name} onChange={e => setName(e.target.value)} />
                     <br />

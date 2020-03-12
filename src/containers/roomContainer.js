@@ -13,8 +13,8 @@ const RoomContainer = (props) => {
     }, [])
 
     const handleRecieved = response => {
-        const { userGame } = response
-        setUserGames([...userGames, userGame])
+        const { user_game } = response
+        setUserGames([...userGames, user_game])
     }
 
 
@@ -32,7 +32,7 @@ const RoomContainer = (props) => {
             <h1>Room Container</h1>
             <ActionCableConsumer
                 key={props.room.id}
-                channel={{ channel: 'RoomChannel', room: props.room.id }}
+                channel={{ channel: 'RoomsChannel', room: props.room.id }}
                 onReceived={handleRecieved}
             />
             <h6>Players:</h6>

@@ -56,9 +56,13 @@ const RoomListContainer = (props) => {
         })
             .then(res => res.json())
             .then(room => {
-                props.setRoom(room)
-                handleCloseJoin()
-                props.history.push(`/rooms/${room.id}`)
+                if(room.errors) {
+                    alert('Wrong Password')
+                }  else {
+                    props.setRoom(room)
+                    handleCloseJoin()
+                    props.history.push(`/rooms/${room.id}`)
+                }
             })
     }
 
