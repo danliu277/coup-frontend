@@ -10,6 +10,7 @@ import { register } from './serviceWorker';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 let store = createStore(reducer);
 
