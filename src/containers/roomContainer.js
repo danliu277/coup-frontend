@@ -8,13 +8,23 @@ const RoomContainer = (props) => {
 
     useEffect(() => {
         fetch(`${API_ROOT}/user_games/${props.room.id}`)
-        .then(res => res.json())
-        .then(userGames => setUserGames(userGames))
+            .then(res => res.json())
+            .then(userGames => setUserGames(userGames))
     }, [])
 
     const handleRecieved = response => {
         const { userGame } = response
         setUserGames([...userGames, userGame])
+    }
+
+
+    const mapUserGames = userGames => {
+        return userGames.map(userGame => {
+            return <div key={userGame.id}>
+                {props.room.user.id === userGame.user.id && '👑'}
+                {userGame.user && userGame.user.nickname}
+            </div>
+        })
     }
 
     return (
@@ -25,7 +35,8 @@ const RoomContainer = (props) => {
                 channel={{ channel: 'RoomChannel', room: props.room.id }}
                 onReceived={handleRecieved}
             />
-
+            <h6>Players:</h6>
+            {mapUserGames(userGames)}
         </div>
     )
 }
@@ -37,9 +48,3 @@ const msp = state => {
 }
 
 export default connect(msp)(RoomContainer)
-
-const mapUserGames = userGames => {
-    return userGames.map(userGame => {
-        return <div>{userGame.user}</div>
-    })
-}
