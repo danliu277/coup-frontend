@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Room = (props) => {
+const Room = ({room, handleShowJoin}) => {
     return (
-        <div>
-            <h3>{props.name} {props.password ? `🔒` : `🔓`}</h3>
-            <h4>{props.user}</h4>
+        <div onClick={() => handleShowJoin(room)}>
+            <h3>{room.name} {room.password && `🔑`} {`${room.user_games}  / 6`}</h3>
+            <h6>Room Owner: {room.user}</h6>
         </div>
     )
 }
