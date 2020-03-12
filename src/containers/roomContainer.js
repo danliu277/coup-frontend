@@ -32,7 +32,7 @@ const RoomContainer = (props) => {
             <h1>Room Container</h1>
             <ActionCableConsumer
                 key={props.room.id}
-                channel={{ channel: 'RoomsChannel', room: props.room.id }}
+                channel={{ channel: 'RoomsChannel', room: props.room.id, user:props.user.id }}
                 onReceived={handleRecieved}
             />
             <h6>Players:</h6>
@@ -43,6 +43,7 @@ const RoomContainer = (props) => {
 
 const msp = state => {
     return {
+        user: state.user,
         room: state.room
     }
 }
