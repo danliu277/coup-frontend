@@ -5,6 +5,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Register from './components/register'
 import RoomListContainer from './containers/roomListContainer';
 import RoomContainer from './containers/roomContainer';
+import GameContainer from './containers/gameContainer';
 
 
 function App(props) {
@@ -23,6 +24,12 @@ function App(props) {
           else
             return <Redirect to="/" />
         }} />
+        <Route exact path="/games/:id" component={(routerProps) => {
+          if (props.user && props.game)
+            return <GameContainer {...routerProps} />
+          else
+            return <Redirect to="/" />
+        }} />
         <Route path="/" component={(routerProps) => <Register {...routerProps} />} />
         <Route render={() => <Redirect to="/" />} />
       </Switch>
@@ -33,7 +40,8 @@ function App(props) {
 const msp = state => {
   return {
     user: state.user,
-    room: state.room
+    room: state.room,
+    game: state.game
   }
 }
 

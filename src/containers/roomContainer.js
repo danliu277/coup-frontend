@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { API_ROOT } from '../constants';
 import { ActionCable } from 'actioncable-client-react'
 import { getGameActionCreator, startGameActionCreator, getUserGamesActionCreator } from '../action/actionCreator';
 
 class RoomContainer extends Component {
-    state = {
-    }
-
     componentDidMount() {
         this.props.getUserGames(this.props.room.id)
     }
@@ -26,22 +23,27 @@ class RoomContainer extends Component {
     }
 
     startGame = () => {
-        this.props.getGame(this.props.room.id)
+        this.props.startGame(this.props.room.id)
     }
 
     render() {
         return (
-            <div>
-                <h1>{this.props.room && this.props.room.name}</h1>
-                <ActionCable
-                    channel={'RoomsChannel'}
-                    room={{ id: this.props.room.id, user: this.props.user.id }}
-                    onReceived={this.handleRecieved}
-                />
-                <button onClick={this.startGame}>Start Game</button>
-                <h6>Players:</h6>
-                {this.mapUserGames()}
-            </div>
+            <>
+                {
+                    this.props.game ? <Redirect to={`/games/${this.props.game.id}`} /> :
+                    <div>
+                        <h1>{this.props.room && this.props.room.name}</h1>
+                        <ActionCable
+                            channel={'RoomsChannel'}
+                            room={{ id: this.props.room.id, user: this.props.user.id }}
+                            onReceived={this.handleRecieved}
+                        />
+                        <button onClick={this.startGame}>Start Game</button>
+                        <h6>Players:</h6>
+                        {this.mapUserGames()}
+                    </div>
+                }
+            </>
         )
     }
 }
@@ -50,7 +52,8 @@ const msp = state => {
     return {
         user: state.user,
         room: state.room,
-        userGames: state.userGames
+        userGames: state.userGames,
+        game: state.game
     }
 }
 
@@ -58,7 +61,7 @@ const mdp = dispatch => {
     return {
         getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId)),
         getGame: (roomId) => dispatch(getGameActionCreator(roomId)),
-        // startGame: () => dispatch(startGameActionCreator())
+        startGame: (roomId) => dispatch(startGameActionCreator(roomId))
     }
 }
 

@@ -18,16 +18,6 @@ const reducer = (prevState = initialState, action) => {
             return { ...prevState, userGames: action.userGames }
         case 'SETGAME':
             return { ...prevState, game: action.game }
-        // case 'STARTGAME':
-        //     fetch(`${API_ROOT}/games/${prevState.game.id}`, {
-        //         method: 'POST',
-        //         headers: HEADERS,
-        //         body: JSON.stringify({ user_id: prevState.user.id })
-        //     }).then(res => res.json())
-        //         .then(game => {
-        //             debugger
-        //         })
-        //     break;
         default:
             return prevState
     }
