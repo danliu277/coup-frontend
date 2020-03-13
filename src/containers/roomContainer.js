@@ -2,20 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { API_ROOT } from '../constants';
 import { ActionCable } from 'actioncable-client-react'
-import { getGameActionCreator, startGameActionCreator } from '../action/actionCreator';
+import { getGameActionCreator, startGameActionCreator, getUserGamesActionCreator } from '../action/actionCreator';
 
 class RoomContainer extends Component {
     state = {
-        userGames: []
     }
 
     componentDidMount() {
-        this.props.getGame()
-        fetch(`${API_ROOT}/user_games/${this.props.room.id}`)
-            .then(res => res.json())
-            .then(userGames => {
-                this.setState(() => ({ userGames }))
-            })
+        this.props.getUserGames(this.props.room.id)
     }
 
     handleRecieved = () => {
@@ -28,7 +22,7 @@ class RoomContainer extends Component {
 
 
     mapUserGames = () => {
-        return this.state.userGames.map(userGame => {
+        return this.props.userGames.map(userGame => {
             return <div key={userGame.id}>
                 {this.props.room.user.id === userGame.user.id && '👑'}
                 {userGame.user && userGame.user.nickname}
@@ -37,7 +31,7 @@ class RoomContainer extends Component {
     }
 
     startGame = () => {
-        this.props.startGame()
+        this.props.getGame(this.props.room.id)
     }
 
     render() {
@@ -60,14 +54,16 @@ class RoomContainer extends Component {
 const msp = state => {
     return {
         user: state.user,
-        room: state.room
+        room: state.room,
+        userGames: state.userGames
     }
 }
 
 const mdp = dispatch => {
     return {
-        getGame: () => dispatch(getGameActionCreator()),
-        startGame: () => dispatch(startGameActionCreator())
+        getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId)),
+        getGame: (roomId) => dispatch(getGameActionCreator(roomId)),
+        // startGame: () => dispatch(startGameActionCreator())
     }
 }
 

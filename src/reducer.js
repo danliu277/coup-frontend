@@ -2,7 +2,8 @@ let initialState = {
     user: null,
     room: null,
     game: null,
-    rooms: []
+    rooms: [],
+    userGames: []
 }
 
 const reducer = (prevState = initialState, action) => {
@@ -13,15 +14,10 @@ const reducer = (prevState = initialState, action) => {
             return { ...prevState, room: action.room }
         case 'SETROOMS':
             return { ...prevState, rooms: action.rooms }
-        // case 'GETGAME':
-        //     fetch(`${API_ROOT}/games/${prevState.room.id}`)
-        //         .then(res => res.json())
-        //         .then(game => {
-        //             debugger
-        //         })
-        //     break;
-        // case 'SETGAME':
-        //     return { ...prevState, game: action.game }
+        case 'SETUSERGAMES':
+            return { ...prevState, userGames: action.userGames }
+        case 'SETGAME':
+            return { ...prevState, game: action.game }
         // case 'STARTGAME':
         //     fetch(`${API_ROOT}/games/${prevState.game.id}`, {
         //         method: 'POST',
