@@ -24,7 +24,7 @@ export const getRoomsActionCreator = () => {
             })
     }
 }
-export const createRoomsActionCreator = (room, user_id) => {
+export const createRoomActionCreator = (room, user_id) => {
     return dispatch => {
         fetch(`${API_ROOT}/rooms`, {
             method: 'POST',
@@ -33,8 +33,23 @@ export const createRoomsActionCreator = (room, user_id) => {
         }).then(res => res.json())
             .then(room => {
                 dispatch(setRoomActionCreator(room))
-                // this.props.setRoom(room)
-                // this.props.history.push(`/rooms/${this.room.id}`)
+            })
+    }
+}
+export const joinRoomActionCreator = (roomId, user_id, password) => {
+    return dispatch => {
+        fetch(`${API_ROOT}/rooms/${roomId}`, {
+            method: 'POST',
+            headers: HEADERS,
+            body: JSON.stringify({ user_id, password })
+        })
+            .then(res => res.json())
+            .then(room => {
+                if (room.errors) {
+                    alert('Wrong Password')
+                } else {
+                    dispatch(setRoomActionCreator(room))
+                }
             })
     }
 }

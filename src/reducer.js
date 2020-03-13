@@ -1,5 +1,3 @@
-import { API_ROOT, HEADERS } from './constants';
-
 let initialState = {
     user: null,
     room: null,

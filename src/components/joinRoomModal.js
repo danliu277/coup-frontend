@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { joinRoomActionCreator } from '../action/actionCreator';
+
 class JoinRoomModal extends Component {
     state = {
         password: ''
@@ -12,7 +15,7 @@ class JoinRoomModal extends Component {
 
     handleJoin = (event) => {
         event.preventDefault()
-        this.props.joinRoom(this.state.password)
+        this.props.joinRoom(this.props.room.id, this.props.user.id, this.state.password)
     }
 
     render() {
@@ -48,4 +51,16 @@ class JoinRoomModal extends Component {
     }
 }
 
-export default JoinRoomModal
+const msp = state => {
+    return {
+        user: state.user
+    }
+}
+
+const mdp = dispatch => {
+    return {
+        joinRoom: (roomId, userId, password) => dispatch(joinRoomActionCreator(roomId, userId, password))
+    }
+}
+
+export default connect(msp, mdp)(JoinRoomModal)

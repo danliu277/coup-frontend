@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { createRoomsActionCreator } from '../action/actionCreator';
+import { createRoomActionCreator } from '../action/actionCreator';
 
 class CreateRoomModal extends Component {
     state = {
@@ -65,7 +65,7 @@ const msp = state => {
 
 const mdp = dispatch => {
     return {
-        createRoom: (room, userId) => dispatch(createRoomsActionCreator(room, userId))
+        createRoom: (room, userId) => dispatch(createRoomActionCreator(room, userId))
     }
 }
 

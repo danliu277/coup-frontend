@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom'
-import { API_ROOT, HEADERS } from '../constants';
 import Room from '../components/room';
 import CreateRoomModal from '../components/createRoomModal';
 import JoinRoomModal from '../components/joinRoomModal';
@@ -44,24 +43,6 @@ class RoomListContainer extends Component {
         };
     }
 
-    joinRoom = (password) => {
-        fetch(`${API_ROOT}/rooms/${this.state.room.id}`, {
-            method: 'POST',
-            headers: HEADERS,
-            body: JSON.stringify({ user_id: this.props.user.id, password })
-        })
-            .then(res => res.json())
-            .then(room => {
-                if (room.errors) {
-                    alert('Wrong Password')
-                } else {
-                    this.props.setRoom(room)
-                    this.handleCloseJoin()
-                    this.props.history.push(`/rooms/${room.id}`)
-                }
-            })
-    }
-
     mapRooms = rooms => {
         return rooms && rooms.map(room =>
             <Room key={room.id} room={room} handleShowJoin={this.handleShowJoin} />
@@ -69,7 +50,6 @@ class RoomListContainer extends Component {
     }
 
     render() {
-        console.log("ronlist render ", this.props)
         return (
             <>
                 {this.props.room ? <Redirect to={`/rooms/${this.props.room.id}`} /> :
@@ -87,8 +67,7 @@ class RoomListContainer extends Component {
                             <JoinRoomModal
                                 show={this.state.showJoin}
                                 handleClose={this.handleCloseJoin}
-                                joinRoom={this.joinRoom}
-                                room={this.props.room}
+                                room={this.state.room}
                             />
                         </div>}
             </>
