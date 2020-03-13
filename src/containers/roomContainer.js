@@ -13,13 +13,8 @@ class RoomContainer extends Component {
     }
 
     handleRecieved = () => {
-        fetch(`${API_ROOT}/user_games/${this.props.room.id}`)
-            .then(res => res.json())
-            .then(userGames => {
-                this.setState(() => ({ userGames }))
-            })
+        this.props.getUserGames(this.props.room.id)
     }
-
 
     mapUserGames = () => {
         return this.props.userGames.map(userGame => {
