@@ -1,50 +1,51 @@
-import React, { useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { API_ROOT, HEADERS } from '../constants';
 import { ActionCable } from 'actioncable-client-react'
 
-const RoomContainer = (props) => {
-    console.log('In room container')
-    const [userGames, setUserGames] = useState([])
+class RoomContainer extends Component {
+    state = {
+        userGames: []
+    }
 
-    useEffect(() => {
-        fetch(`${API_ROOT}/user_games/${props.room.id}`)
+    componentDidMount() {
+        fetch(`${API_ROOT}/user_games/${this.props.room.id}`)
             .then(res => res.json())
             .then(userGames => {
-                setUserGames(userGames)
+                this.setState(() => ({ userGames }))
             })
-    }, [userGames.length])
+    }
 
-    const handleRecieved = response => {
-        console.log(userGames)
+    handleRecieved = response => {
         const { user_game } = response
-        debugger
-        setUserGames([...userGames, user_game])
+        this.setState((state) => ({ userGames: [...state.userGames, user_game]}))
     }
 
 
-    const mapUserGames = () => {
-        return userGames.map(userGame => {
+    mapUserGames = () => {
+        return this.state.userGames.map(userGame => {
             return <div key={userGame.id}>
-                {props.room.user.id === userGame.user.id && '👑'}
+                {this.props.room.user.id === userGame.user.id && '👑'}
                 {userGame.user && userGame.user.nickname}
             </div>
         })
     }
 
-    return (
-        <div>
-            <h1>Room Container</h1>
-            <ActionCable
-                // channel={{ channel: 'RoomsChannel', room: props.room.id, user:props.user.id }}
-                channel={'RoomsChannel'}
-                room={{id: props.room.id, user: props.user.id}}
-                onReceived={handleRecieved}
-            />
-            <h6>Players:</h6>
-            {mapUserGames()}
-        </div>
-    )
+    render() {
+        return (
+            <div>
+                <h1>Room Container</h1>
+                <ActionCable
+                    // channel={{ channel: 'RoomsChannel', room: props.room.id, user:props.user.id }}
+                    channel={'RoomsChannel'}
+                    room={{id: this.props.room.id, user: this.props.user.id}}
+                    onReceived={this.handleRecieved}
+                />
+                <h6>Players:</h6>
+                {this.mapUserGames()}
+            </div>
+        )
+    }
 }
 
 const msp = state => {

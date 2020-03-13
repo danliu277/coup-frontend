@@ -7,12 +7,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ActionCableProvider } from "actioncable-client-react";
 import { API_WS_ROOT } from './constants';
 import { register } from './serviceWorker';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import reducer from './reducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-let store = createStore(reducer);
+let store = createStore(reducer, applyMiddleware(thunk))
 
 ReactDOM.render(
     <ActionCableProvider url={API_WS_ROOT}>

@@ -1,34 +1,46 @@
-import React, { useState } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { API_ROOT, HEADERS } from '../constants'
 import { setUserActionCreator } from '../actionCreator';
 
-const Register = (props) => {
-    const [nickname, setNickname] = useState('')
+class Register extends Component {
+    state = {
+        nickname: ''
+    }
 
-    const onSubmit = event => {
+    updateValues = event => {
+        const {name, value} = event.target
+        this.setState(() => ({[name]: value}))
+    }
+
+    onSubmit = event => {
         event.preventDefault()
         fetch(`${API_ROOT}/users`, {
             method: 'POST',
             headers: HEADERS,
-            body: JSON.stringify({ nickname })
+            body: JSON.stringify({ nickname: this.state.nickname })
         }).then(res => res.json())
         .then(user => {
-            props.setUser(user)
-            props.history.push(`/rooms`)
+            this.props.setUser(user)
+            this.props.history.push(`/rooms`)
         })
     }
 
-    return (
-        <>
-            <h1>Coup</h1>
-            <form onSubmit={onSubmit}>
-                <label>Nickname:</label>
-                <input value={nickname} onChange={e => setNickname(e.target.value)} />
-                <input type="submit" />
-            </form>
-        </>
-    )
+    render() {
+        return (
+            <>
+                <h1>Coup</h1>
+                <form onSubmit={this.onSubmit}>
+                    <label>Nickname:</label>
+                    <input 
+                        name="nickname"
+                        value={this.state.nickname} 
+                        onChange={this.updateValues} />
+                    <input type="submit" />
+                </form>
+            </>
+        )
+    }
 }
 
 const mdp = (dispatch) => {
