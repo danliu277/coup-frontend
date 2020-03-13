@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { API_ROOT, HEADERS } from '../constants';
+import { API_ROOT } from '../constants';
 import { ActionCable } from 'actioncable-client-react'
+import { getGameActionCreator, startGameActionCreator } from '../action/actionCreator';
 
 class RoomContainer extends Component {
     state = {
@@ -9,6 +10,7 @@ class RoomContainer extends Component {
     }
 
     componentDidMount() {
+        this.props.getGame()
         fetch(`${API_ROOT}/user_games/${this.props.room.id}`)
             .then(res => res.json())
             .then(userGames => {
@@ -16,9 +18,7 @@ class RoomContainer extends Component {
             })
     }
 
-    handleRecieved = response => {
-        // const { user_game } = response
-        // this.setState((state) => ({ userGames: [...state.userGames, user_game]}))
+    handleRecieved = () => {
         fetch(`${API_ROOT}/user_games/${this.props.room.id}`)
             .then(res => res.json())
             .then(userGames => {
@@ -36,16 +36,20 @@ class RoomContainer extends Component {
         })
     }
 
+    startGame = () => {
+        this.props.startGame()
+    }
+
     render() {
         return (
             <div>
-                <h1>Room Container</h1>
+                <h1>{this.props.room && this.props.room.name}</h1>
                 <ActionCable
-                    // channel={{ channel: 'RoomsChannel', room: props.room.id, user:props.user.id }}
                     channel={'RoomsChannel'}
                     room={{ id: this.props.room.id, user: this.props.user.id }}
                     onReceived={this.handleRecieved}
                 />
+                <button onClick={this.startGame}>Start Game</button>
                 <h6>Players:</h6>
                 {this.mapUserGames()}
             </div>
@@ -60,4 +64,11 @@ const msp = state => {
     }
 }
 
-export default connect(msp)(RoomContainer)
+const mdp = dispatch => {
+    return {
+        getGame: () => dispatch(getGameActionCreator()),
+        startGame: () => dispatch(startGameActionCreator())
+    }
+}
+
+export default connect(msp, mdp)(RoomContainer)

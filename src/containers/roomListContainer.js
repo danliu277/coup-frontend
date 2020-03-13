@@ -4,7 +4,7 @@ import { API_ROOT, HEADERS } from '../constants';
 import Room from '../components/room';
 import CreateRoomModal from '../components/createRoomModal';
 import JoinRoomModal from '../components/joinRoomModal';
-import { setRoomActionCreator } from '../actionCreator';
+import { setRoomActionCreator } from '../action/actionCreator';
 
 class RoomListContainer extends Component {
     state = {
@@ -88,6 +88,7 @@ class RoomListContainer extends Component {
             <Room key={room.id} room={room} handleShowJoin={this.handleShowJoin} />
         )
     }
+    
     render() {
         return (
             <div>
@@ -115,7 +116,8 @@ class RoomListContainer extends Component {
 
 const msp = state => {
     return {
-        user: state.user
+        user: state.user,
+        rooms: state.rooms
     }
 }
 
