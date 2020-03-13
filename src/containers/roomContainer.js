@@ -17,8 +17,13 @@ class RoomContainer extends Component {
     }
 
     handleRecieved = response => {
-        const { user_game } = response
-        this.setState((state) => ({ userGames: [...state.userGames, user_game]}))
+        // const { user_game } = response
+        // this.setState((state) => ({ userGames: [...state.userGames, user_game]}))
+        fetch(`${API_ROOT}/user_games/${this.props.room.id}`)
+            .then(res => res.json())
+            .then(userGames => {
+                this.setState(() => ({ userGames }))
+            })
     }
 
 
@@ -38,7 +43,7 @@ class RoomContainer extends Component {
                 <ActionCable
                     // channel={{ channel: 'RoomsChannel', room: props.room.id, user:props.user.id }}
                     channel={'RoomsChannel'}
-                    room={{id: this.props.room.id, user: this.props.user.id}}
+                    room={{ id: this.props.room.id, user: this.props.user.id }}
                     onReceived={this.handleRecieved}
                 />
                 <h6>Players:</h6>
