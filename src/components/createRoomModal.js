@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { createRoomsActionCreator } from '../action/actionCreator';
+
 class CreateRoomModal extends Component {
     state = {
         name: '',
@@ -13,7 +16,7 @@ class CreateRoomModal extends Component {
 
     handleCreate = (event) => {
         event.preventDefault()
-        this.props.createRoom(this.state)
+        this.props.createRoom(this.state, this.props.user.id)
         this.setState(() => ({ name: '', password: '' }))
     }
 
@@ -54,4 +57,16 @@ class CreateRoomModal extends Component {
     }
 }
 
-export default CreateRoomModal
+const msp = state => {
+    return {
+        user: state.user
+    }
+}
+
+const mdp = dispatch => {
+    return {
+        createRoom: (room, userId) => dispatch(createRoomsActionCreator(room, userId))
+    }
+}
+
+export default connect(msp, mdp)(CreateRoomModal)

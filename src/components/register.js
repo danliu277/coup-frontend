@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
-import {pickNickname} from '../action/actionCreator'
+import { pickNicknameActionCreator } from '../action/actionCreator'
 
 class Register extends Component {
     state = {
@@ -19,7 +19,6 @@ class Register extends Component {
     }
 
     render() {
-        console.log("REGISTER RENDER", this.props)
         return (
             <>
                 {
@@ -49,7 +48,7 @@ const msp = state => {
 
 const mdp = (dispatch) => {
     return {
-        pickNickname: (nickname) => dispatch(pickNickname(nickname))
+        pickNickname: (nickname) => dispatch(pickNicknameActionCreator(nickname))
     }
 }
 

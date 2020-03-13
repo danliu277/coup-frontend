@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom'
 import { API_ROOT, HEADERS } from '../constants';
 import Room from '../components/room';
 import CreateRoomModal from '../components/createRoomModal';
 import JoinRoomModal from '../components/joinRoomModal';
-import { setRoomActionCreator } from '../action/actionCreator';
+import { getRoomsActionCreator, setRoomsActionCreator } from '../action/actionCreator';
 
 class RoomListContainer extends Component {
     state = {
-        rooms: [],
         showCreate: false,
         showJoin: false,
         room: null
@@ -34,7 +34,7 @@ class RoomListContainer extends Component {
     }
 
     componentDidMount() {
-        this.getRooms()
+        this.props.getRooms()
     }
 
     componentWillUnmount() {
@@ -42,27 +42,6 @@ class RoomListContainer extends Component {
         this.setState = () => {
             return;
         };
-    }
-
-    getRooms = () => {
-        fetch(`${API_ROOT}/rooms`)
-            .then(res => res.json())
-            .then(rooms => {
-                this.setState(() => ({ rooms }))
-            })
-    }
-
-    createRoom = (room) => {
-        fetch(`${API_ROOT}/rooms`, {
-            method: 'POST',
-            headers: HEADERS,
-            body: JSON.stringify({ room: { ...room, user_id: this.props.user.id } })
-        }).then(res => res.json())
-            .then(room => {
-                this.props.setRoom(room)
-                this.handleCloseCreate()
-                this.props.history.push(`/rooms/${room.id}`)
-            })
     }
 
     joinRoom = (password) => {
@@ -88,28 +67,31 @@ class RoomListContainer extends Component {
             <Room key={room.id} room={room} handleShowJoin={this.handleShowJoin} />
         )
     }
-    
+
     render() {
+        console.log("ronlist render ", this.props)
         return (
-            <div>
-                <h1>Room List</h1>
-                <button onClick={this.getRooms}>Refresh</button>
-                <div>
-                    {this.mapRooms(this.state.rooms)}
-                </div>
-                <button onClick={this.handleShowCreate}>Create Room</button>
-                <CreateRoomModal
-                    show={this.state.showCreate}
-                    handleClose={this.handleCloseCreate}
-                    createRoom={this.createRoom}
-                />
-                <JoinRoomModal
-                    show={this.state.showJoin}
-                    handleClose={this.handleCloseJoin}
-                    joinRoom={this.joinRoom}
-                    room={this.state.room}
-                />
-            </div>
+            <>
+                {this.props.room ? <Redirect to={`/rooms/${this.props.room.id}`} /> :
+                        <div>
+                            <h1>Room List</h1>
+                            <button onClick={() => this.props.getRooms()}>Refresh</button>
+                            <div>
+                                {this.mapRooms(this.props.rooms)}
+                            </div>
+                            <button onClick={this.handleShowCreate}>Create Room</button>
+                            <CreateRoomModal
+                                show={this.state.showCreate}
+                                handleClose={this.handleCloseCreate}
+                            />
+                            <JoinRoomModal
+                                show={this.state.showJoin}
+                                handleClose={this.handleCloseJoin}
+                                joinRoom={this.joinRoom}
+                                room={this.props.room}
+                            />
+                        </div>}
+            </>
         )
     }
 }
@@ -117,13 +99,15 @@ class RoomListContainer extends Component {
 const msp = state => {
     return {
         user: state.user,
-        rooms: state.rooms
+        rooms: state.rooms,
+        room: state.room
     }
 }
 
 const mdp = dispatch => {
     return {
-        setRoom: (room) => dispatch(setRoomActionCreator(room))
+        getRooms: () => dispatch(getRoomsActionCreator()),
+        setRoom: () => dispatch(setRoomsActionCreator())
     }
 }
 

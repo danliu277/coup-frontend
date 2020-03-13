@@ -13,25 +13,27 @@ const reducer = (prevState = initialState, action) => {
             return { ...prevState, user: action.user }
         case 'SETROOM':
             return { ...prevState, room: action.room }
-        case 'GETGAME':
-            fetch(`${API_ROOT}/games/${prevState.room.id}`)
-                .then(res => res.json())
-                .then(game => {
-                    debugger
-                })
-            break;
-        case 'SETGAME':
-            return { ...prevState, game: action.game }
-        case 'STARTGAME':
-            fetch(`${API_ROOT}/games/${prevState.game.id}`, {
-                method: 'POST',
-                headers: HEADERS,
-                body: JSON.stringify({ user_id: prevState.user.id })
-            }).then(res => res.json())
-                .then(game => {
-                    debugger
-                })
-            break;
+        case 'SETROOMS':
+            return { ...prevState, rooms: action.rooms }
+        // case 'GETGAME':
+        //     fetch(`${API_ROOT}/games/${prevState.room.id}`)
+        //         .then(res => res.json())
+        //         .then(game => {
+        //             debugger
+        //         })
+        //     break;
+        // case 'SETGAME':
+        //     return { ...prevState, game: action.game }
+        // case 'STARTGAME':
+        //     fetch(`${API_ROOT}/games/${prevState.game.id}`, {
+        //         method: 'POST',
+        //         headers: HEADERS,
+        //         body: JSON.stringify({ user_id: prevState.user.id })
+        //     }).then(res => res.json())
+        //         .then(game => {
+        //             debugger
+        //         })
+        //     break;
         default:
             return prevState
     }
