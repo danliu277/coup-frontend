@@ -1,54 +1,44 @@
-import React, { Component } from 'react'
+import React, { useEffect, memo } from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
-import { getGameActionCreator, startGameActionCreator, getUserGamesActionCreator } from '../action/actionCreator';
-import RoomPlayers from '../components/roomPlayers';
-import GameContainer from './gameContainer';
+import { getUserGamesActionCreator } from '../action/actionCreator';
+import RenderRoom from '../components/renderRoom';
 
-class RoomContainer extends Component {
-    componentDidMount() {
-        this.props.getUserGames(this.props.room.id)
+const RoomContainer = memo((props) => {
+    useEffect(() => {
+        props.getUserGames(props.room.id)
+    }, [props])
+
+    const handleRecieved = () => {
+        props.getUserGames(props.room.id)
     }
 
-    handleRecieved = () => {
-        this.props.getUserGames(this.props.room.id)
-    }
-
-    render() {
-        return (
-            <>
-                {
-                    <div>
-                        <ActionCable
-                            channel={'RoomsChannel'}
-                            room={{ id: this.props.room.id, user: this.props.user.id }}
-                            onReceived={this.handleRecieved}
-                        />
-                        {
-                            // Add Game container here to avoid unsubscribing
-                            this.props.game ? <GameContainer /> : <RoomPlayers />
-                        }
-                    </div>
-                }
-            </>
-        )
-    }
-}
+    return (
+        <>
+            {
+                <div>
+                    <ActionCable
+                        channel={'RoomsChannel'}
+                        room={{ id: props.room.id, user: props.user.id }}
+                        onReceived={handleRecieved}
+                    />
+                    <RenderRoom />
+                </div>
+            }
+        </>
+    )
+})
 
 const msp = state => {
     return {
         user: state.user,
-        room: state.room,
-        userGames: state.userGames,
-        game: state.game
+        room: state.room
     }
 }
 
 const mdp = dispatch => {
     return {
-        getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId)),
-        getGame: (roomId) => dispatch(getGameActionCreator(roomId)),
-        startGame: (roomId) => dispatch(startGameActionCreator(roomId))
+        getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId))
     }
 }
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Register from './components/register'
 import RoomListContainer from './containers/roomListContainer';
 import RoomContainer from './containers/roomContainer';
 
 function App(props) {
+  console.log('APP')
   return (
     <div className="App">
       <Switch>

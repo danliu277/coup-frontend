@@ -18,6 +18,8 @@ const reducer = (prevState = initialState, action) => {
             return { ...prevState, userGames: action.userGames }
         case 'SETGAME':
             return { ...prevState, game: action.game }
+        case 'SETUSERGAME':
+            return { ...prevState, game: action.userGame }
         default:
             return prevState
     }

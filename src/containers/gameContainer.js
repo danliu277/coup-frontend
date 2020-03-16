@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
+import { getUserGameActionCreator } from '../action/actionCreator';
 
 class GameContainer extends Component {
+    componentDidMount() {
+        this.props.getUserGame(this.props.user.id)
+    }
+
     handleRecieved = () => {
 
     }
@@ -32,6 +37,7 @@ const msp = state => {
 
 const mdp = dispatch => {
     return {
+        getUserGame: (userId) => dispatch(getUserGameActionCreator(userId))
     }
 }
 

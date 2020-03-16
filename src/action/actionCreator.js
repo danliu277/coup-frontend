@@ -55,10 +55,11 @@ export const joinRoomActionCreator = (roomId, user_id, password) => {
     }
 }
 
+// Check user in game
 export const setUserGamesActionCreator = (userGames) => ({ type: 'SETUSERGAMES', userGames })
 export const getUserGamesActionCreator = (roomId) => {
     return dispatch => {
-        fetch(`${API_ROOT}/user_games/${roomId}`)
+        fetch(`${API_ROOT}/user_games/room/${roomId}`)
             .then(res => res.json())
             .then(userGames => {
                 dispatch(setUserGamesActionCreator(userGames))
@@ -66,13 +67,13 @@ export const getUserGamesActionCreator = (roomId) => {
     }
 }
 
-export const setGameActionCreator = (game) => ({ type: 'SETGAME', game });
-export const getGameActionCreator = (roomId) => {
+export const setGamesActionCreator = (game) => ({ type: 'SETGAME', game });
+export const getGamesActionCreator = (roomId) => {
     return dispatch => {
         fetch(`${API_ROOT}/games/${roomId}`)
             .then(res => res.json())
             .then(game => {
-                dispatch(setGameActionCreator(game))
+                dispatch(setGamesActionCreator(game))
             })
     }
 }
@@ -84,7 +85,18 @@ export const startGameActionCreator = (roomId) => {
         })
             .then(res => res.json())
             .then(game => {
-                dispatch(setGameActionCreator(game))
+                dispatch(setGamesActionCreator(game))
+            })
+    }
+}
+
+export const setUserGameActionCreator = (userGame) => ({ type: 'SETUSERGAME', userGame });
+export const getUserGameActionCreator = (userId) => {
+    return dispatch => {
+        fetch(`${API_ROOT}/user_games/game/${userId}`)
+            .then(res => res.json())
+            .then(userGame => {
+                dispatch(setUserGameActionCreator(userGame))
             })
     }
 }
