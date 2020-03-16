@@ -11,16 +11,16 @@ function App(props) {
     <div className="App">
       <Switch>
         <Route exact path="/rooms" component={(routerProps) => {
-          if (props.user)
+          // if (props.user)
             return <RoomListContainer {...routerProps} />
-          else
-            return <Redirect to="/" />
+          // else
+          //   return <Redirect to="/" />
         }} />
         <Route exact path="/rooms/:id" component={(routerProps) => {
-          if (props.user && props.room)
-            return <RoomContainer {...routerProps} />
-          else
-            return <Redirect to="/" />
+          // if (props.user && props.room)
+            return <RoomContainer />
+          // else
+          //   return <Redirect to="/" />
         }} />
         <Route path="/" component={(routerProps) => <Register {...routerProps} />} />
         <Route render={() => <Redirect to="/" />} />
@@ -29,12 +29,13 @@ function App(props) {
   );
 }
 
-const msp = state => {
-  return {
-    user: state.user,
-    room: state.room,
-    game: state.game
-  }
-}
+// const msp = state => {
+//   return {
+//     user: state.user,
+//     room: state.room,
+//     game: state.game
+//   }
+// }
 
-export default connect(msp)(App);
+// export default connect(msp)(App);
+export default App
