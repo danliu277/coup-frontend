@@ -7,7 +7,6 @@ import RoomListContainer from './containers/roomListContainer';
 import RoomContainer from './containers/roomContainer';
 
 function App(props) {
-  console.log('APP')
   return (
     <div className="App">
       <Switch>

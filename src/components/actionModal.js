@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { executeActionCreator } from '../action/actionCreator'
 
 const options = [
-    "Normal: Income (Take one coin fomr treasury)",
+    "Normal: Income (Take one coin from treasury)",
     "Normal: Foreign Aid (Take 2 coin from treasury)",
     "Normal: Coup (Pay 7 coins to force another player to lose influence",
     "Duke: Take 3 coins from treasury",
     "Assassin: Pay 3 coins to assassinate another players character",
-    "Captain: Take 3 coins from another player",
+    "Captain: Take 2 coins from another player",
     "Amabassador: Draw 2 cards and choose which (if any) you want to exchange"
 ]
 
@@ -39,11 +39,11 @@ class ActionModal extends Component {
         this.props.handleClose()
     }
 
-    exectueAction = () => {
+    executeAction = () => {
         const {selectedAction} = this.state
-        console.log("EXECUTE ACTION: ", selectedAction)
-        if(selectedAction) {
-            this.props.exectueAction(selectedAction)
+        const {game, userGame} = this.props
+        if(selectedAction >= 0) {
+            this.props.executeAction(selectedAction, game.id, userGame.id)
             this.handleClose()
         }
     }
@@ -83,7 +83,7 @@ class ActionModal extends Component {
                     </ul> */}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={this.exectueAction}>
+                    <Button variant="primary" onClick={this.executeAction}>
                         Execute
                     </Button>
                     <Button variant="danger" onClick={this.handleClose}>
@@ -106,7 +106,7 @@ const msp = state => {
 
 const mdp = dispatch => {
     return {
-        executeAction: action => dispatch(executeActionCreator(action))
+        executeAction: (action, gameId, userGameId, targetId) => dispatch(executeActionCreator(action, gameId, userGameId, targetId))
     }
 }
 

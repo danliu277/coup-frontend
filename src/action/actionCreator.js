@@ -101,16 +101,17 @@ export const getUserGameActionCreator = (userId) => {
     }
 }
 
-export const executeActionCreator = (action, game_id) => {
+export const executeActionCreator = (action, game_id, user_game_id, target_id) => {
+    console.log("EXECUTEACTIONCREATOR: ", action, game_id)
     return dispatch => {
-        fetch(`${API_ROOT}/game_move/${game_id}`, {
+        fetch(`${API_ROOT}/game_moves/${game_id}`, {
             method: 'POST',
             headers: HEADERS,
-            body: JSON.stringify({ action })
+            body: JSON.stringify({ action, user_game_id, target_id })
         })
             .then(res => res.json())
-            .then(room => {
-                dispatch(setRoomActionCreator(room))
+            .then(userGame => {
+                dispatch(setUserGameActionCreator(userGame))
             })
     }
 }
