@@ -26,8 +26,12 @@ class GameContainer extends Component {
     }
 
     mapOtherUserCards = () => {
-        const { userGames } = this.props
-        return userGames.map(userGame => {
+        const { userGames, userGame } = this.props
+        let ugs = userGames
+        if(userGame) {
+            ugs = ugs.filter(ug => ug.id !== userGame.id)
+        }
+        return ugs.map(userGame => {
             return <div id={userGame.id} key={userGame.id}>
                 {userGame.nickname}
                 Money: {userGame.money}
