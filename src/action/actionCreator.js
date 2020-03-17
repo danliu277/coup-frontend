@@ -101,7 +101,7 @@ export const getUserGameActionCreator = (userId) => {
     }
 }
 
-export const executeActionCreator = (action, game_id, user_game_id, target_id) => {
+export const executeActionCreator = (action, game_id, user_game_id, room_id, target_id) => {
     console.log("EXECUTEACTIONCREATOR: ", action, game_id)
     return dispatch => {
         fetch(`${API_ROOT}/game_moves/${game_id}`, {
@@ -112,6 +112,7 @@ export const executeActionCreator = (action, game_id, user_game_id, target_id) =
             .then(res => res.json())
             .then(userGame => {
                 dispatch(setUserGameActionCreator(userGame))
+                dispatch(getUserGamesActionCreator(room_id))
             })
     }
 }

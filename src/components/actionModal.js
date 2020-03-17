@@ -15,7 +15,8 @@ const options = [
 
 class ActionModal extends Component {
     state = {
-        selectedAction: -1
+        selectedAction: -1,
+        targetGame: null
     }
 
     selectAction = (option) => {
@@ -40,10 +41,10 @@ class ActionModal extends Component {
     }
 
     executeAction = () => {
-        const {selectedAction} = this.state
+        const {selectedAction, targetGame} = this.state
         const {game, userGame} = this.props
         if(selectedAction >= 0) {
-            this.props.executeAction(selectedAction, game.id, userGame.id)
+            this.props.executeAction(selectedAction, game.id, userGame.id, game.room_id, targetGame && targetGame.id)
             this.handleClose()
         }
     }
@@ -106,7 +107,7 @@ const msp = state => {
 
 const mdp = dispatch => {
     return {
-        executeAction: (action, gameId, userGameId, targetId) => dispatch(executeActionCreator(action, gameId, userGameId, targetId))
+        executeAction: (action, gameId, userGameId, roomId, targetId) => dispatch(executeActionCreator(action, gameId, userGameId, roomId, targetId))
     }
 }
 
