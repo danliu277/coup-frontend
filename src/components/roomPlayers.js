@@ -1,31 +1,34 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux';
-import { startGameActionCreator } from '../action/actionCreator';
+import { getUserGamesActionCreator, startGameActionCreator } from '../action/actionCreator';
 
-class RoomPlayers extends Component {
-    mapUserGames = () => {
-        return this.props.userGames.map(userGame => {
+const RoomPlayers = props => {
+    useEffect(() => {
+        if(props.userGames.length === 0)
+            props.getUserGames(props.room.id)
+    }, [props])
+
+    const mapUserGames = () => {
+        return props.userGames.map(userGame => {
             return <div key={userGame.id}>
-                {this.props.room.user.id === userGame.user.id && '👑'}
+                {props.room.user.id === userGame.user.id && '👑'}
                 {userGame.user && userGame.user.nickname}
             </div>
         })
     }
 
-    startGame = () => {
-        this.props.startGame(this.props.room.id)
+    const startGame = () => {
+        props.startGame(props.room.id)
     }
 
-    render() {
-        return (
-            <>
-                <h1>{this.props.room && this.props.room.name}</h1>
-                <button onClick={this.startGame}>Start Game</button>
-                <h6>Players:</h6>
-                {this.mapUserGames()}
-            </>
-        )
-    }
+    return (
+        <>
+            <h1>{props.room && props.room.name}</h1>
+            <button onClick={startGame}>Start Game</button>
+            <h6>Players:</h6>
+            {mapUserGames()}
+        </>
+    )
 }
 
 const msp = state => {
@@ -37,6 +40,7 @@ const msp = state => {
 
 const mdp = dispatch => {
     return {
+        getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId)),
         startGame: (roomId) => dispatch(startGameActionCreator(roomId))
     }
 }

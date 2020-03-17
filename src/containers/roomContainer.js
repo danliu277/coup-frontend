@@ -1,15 +1,11 @@
-import React, { useEffect, memo } from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
 import { getUserGamesActionCreator, setGameActionCreator } from '../action/actionCreator';
 import RoomPlayers from '../components/roomPlayers';
 import GameContainer from './gameContainer';
 
-const RoomContainer = memo((props) => {
-    useEffect(() => {
-        props.getUserGames(props.room.id)
-    }, [props])
-
+const RoomContainer = props => {
     const handleRecieved = () => {
         props.getUserGames(props.room.id)
     }
@@ -38,7 +34,7 @@ const RoomContainer = memo((props) => {
             }
         </>
     )
-})
+}
 
 const msp = state => {
     return {
