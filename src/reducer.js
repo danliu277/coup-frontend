@@ -3,7 +3,8 @@ let initialState = {
     room: null,
     game: null,
     rooms: [],
-    userGames: []
+    userGames: [],
+    userGame: null
 }
 
 const reducer = (prevState = initialState, action) => {
@@ -19,7 +20,7 @@ const reducer = (prevState = initialState, action) => {
         case 'SETGAME':
             return { ...prevState, game: action.game }
         case 'SETUSERGAME':
-            return { ...prevState, game: action.userGame }
+            return { ...prevState, userGame: action.userGame }
         default:
             return prevState
     }

@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.user-cards {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.card-img {
+  max-width: 10rem;
+  max-height: 10rem;
+}
+
+.coup-card {
+  text-align: center;
+  width: 10rem;
+  height: 13rem;
+  display: inline-grid;
+  /* margin: 1rem 2rem; */
+  justify-content: center;
+}

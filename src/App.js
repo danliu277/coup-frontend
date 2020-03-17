@@ -19,7 +19,7 @@ function App(props) {
         }} />
         <Route exact path="/rooms/:id" component={(routerProps) => {
           // if (props.user && props.room)
-            return <RoomContainer />
+            return <RoomContainer {...routerProps} />
           // else
           //   return <Redirect to="/" />
         }} />

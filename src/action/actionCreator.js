@@ -67,13 +67,13 @@ export const getUserGamesActionCreator = (roomId) => {
     }
 }
 
-export const setGamesActionCreator = (game) => ({ type: 'SETGAME', game });
-export const getGamesActionCreator = (roomId) => {
+export const setGameActionCreator = (game) => ({ type: 'SETGAME', game });
+export const getGameActionCreator = (roomId) => {
     return dispatch => {
         fetch(`${API_ROOT}/games/${roomId}`)
             .then(res => res.json())
             .then(game => {
-                dispatch(setGamesActionCreator(game))
+                dispatch(setGameActionCreator(game))
             })
     }
 }
@@ -85,7 +85,7 @@ export const startGameActionCreator = (roomId) => {
         })
             .then(res => res.json())
             .then(game => {
-                dispatch(setGamesActionCreator(game))
+                dispatch(setGameActionCreator(game))
             })
     }
 }
