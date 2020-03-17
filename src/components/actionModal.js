@@ -15,8 +15,7 @@ const options = [
 
 class ActionModal extends Component {
     state = {
-        selectedAction: -1,
-        targetGame: null
+        selectedAction: -1
     }
 
     selectAction = (option) => {
@@ -41,8 +40,8 @@ class ActionModal extends Component {
     }
 
     executeAction = () => {
-        const {selectedAction, targetGame} = this.state
-        const {game, userGame} = this.props
+        const {selectedAction} = this.state
+        const {game, userGame, targetGame} = this.props
         if(selectedAction >= 0) {
             this.props.executeAction(selectedAction, game.id, userGame.id, game.room_id, targetGame && targetGame.id)
             this.handleClose()

@@ -6,7 +6,8 @@ import ActionModal from '../components/actionModal';
 
 class GameContainer extends Component {
     state = {
-        showAction: false
+        showAction: false,
+        targetGame: null
     }
 
     componentDidMount() {
@@ -25,16 +26,22 @@ class GameContainer extends Component {
         })
     }
 
+    selectTarget = (targetGame) => {
+        this.setState(() => ({ targetGame }))
+    }
+
     mapOtherUserCards = () => {
         const { userGames, userGame } = this.props
         let ugs = userGames
-        if(userGame) {
+        if (userGame) {
             ugs = ugs.filter(ug => ug.id !== userGame.id)
         }
         return ugs.map(userGame => {
-            return <div id={userGame.id} key={userGame.id}>
-                {userGame.nickname}
-                Money: {userGame.money}
+            return <div id={userGame.id} key={userGame.id} onClick={() => this.selectTarget(userGame)}>
+                <div>
+                    {userGame.nickname} <br/>
+                    Money: {userGame.money}
+                </div>
                 {this.mapCards(userGame.cards)}
             </div>
         })
@@ -70,14 +77,18 @@ class GameContainer extends Component {
                     {this.mapOtherUserCards()}
                 </div>
                 <div className="user-cards">
-                    {user.nickname}
-                    Money: {userGame && userGame.money}
+                    <div>
+                        {user.nickname} <br />
+                        Money: {userGame && userGame.money} <br />
+                        Target: {this.state.targetGame && this.state.targetGame.nickname}
+                    </div>
                     {this.mapUserCards()}
                     <button onClick={this.showModal}>Action</button>
                 </div>
                 <ActionModal
                     show={this.state.showAction}
-                    handleClose={this.closeAction} />
+                    handleClose={this.closeAction}
+                    targetGame={this.state.targetGame} />
             </div>
         )
     }
