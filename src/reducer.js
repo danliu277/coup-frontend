@@ -16,11 +16,14 @@ const reducer = (prevState = initialState, action) => {
         case 'SETROOMS':
             return { ...prevState, rooms: action.rooms }
         case 'SETUSERGAMES':
-            return { ...prevState, userGames: action.userGames }
+            return { ...prevState, userGames: action.userGames.filter(userGame => !prevState.userGame || userGame.id !== prevState.userGame.id) }
         case 'SETGAME':
             return { ...prevState, game: action.game }
         case 'SETUSERGAME':
             return { ...prevState, userGame: action.userGame }
+        case 'HANDLEGAMEMOVE':
+            console.log(action)
+            return { ...prevState }
         default:
             return prevState
     }

@@ -100,3 +100,18 @@ export const getUserGameActionCreator = (userId) => {
             })
     }
 }
+
+export const executeActionCreator = (action, game_id) => {
+    return dispatch => {
+        fetch(`${API_ROOT}/game_move/${game_id}`, {
+            method: 'POST',
+            headers: HEADERS,
+            body: JSON.stringify({ action })
+        })
+            .then(res => res.json())
+            .then(room => {
+                dispatch(setRoomActionCreator(room))
+            })
+    }
+}
+export const handleGameMoveActionCreator = (gameMove) => ({ type: 'HANDLEGAMEMOVE', gameMove });
