@@ -76,6 +76,11 @@ class GameContainer extends Component {
         this.props.setDrawnCards()
     }
 
+    handleRecieved = response => {
+        this.props.getUserGame(this.props.user.id)
+        this.props.getUserGames(this.props.room.id)
+    }
+
     render() {
         const { user, userGame, game } = this.props
         return (
@@ -84,7 +89,7 @@ class GameContainer extends Component {
                 <ActionCable
                     channel={'GamesChannel'}
                     room={game.id}
-                    onReceived={this.showAction}
+                    onReceived={this.handleRecieved}
                 />
                 <div>
                     {this.mapOtherUserCards()}
