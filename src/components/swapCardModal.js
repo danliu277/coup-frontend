@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { executeActionCreator } from '../action/actionCreator'
+import { swapCardsActionCreator } from '../action/actionCreator'
 
 class SwapCardModal extends Component {
     state = {
@@ -46,8 +46,12 @@ class SwapCardModal extends Component {
 
     executeAction = () => {
         const { selectedDraw, selectedHand } = this.state
+        const { executeAction, game, userGame } = this.props
         if (selectedDraw.length === selectedHand.length) {
-            this.setState(() => ({selectedDraw: [], selectedHand: []}))
+            if (selectedDraw.length !== 0 && selectedHand.length !== 0) {
+                executeAction(game.id, selectedHand, selectedDraw, userGame.id)
+                this.setState(() => ({ selectedDraw: [], selectedHand: [] }))
+            }
             this.props.handleClose()
         }
     }
@@ -87,7 +91,7 @@ const msp = state => {
 
 const mdp = dispatch => {
     return {
-        // executeAction: (action, gameId, userGameId, roomId, targetId) => dispatch(executeActionCreator(action, gameId, userGameId, roomId, targetId))
+        executeAction: (gameId, selectedHand, selectedDraw, userGameId) => dispatch(swapCardsActionCreator(gameId, selectedHand, selectedDraw, userGameId))
     }
 }
 
