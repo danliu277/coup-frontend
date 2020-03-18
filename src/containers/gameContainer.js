@@ -64,14 +64,14 @@ class GameContainer extends Component {
     }
 
     render() {
-        const { user, userGame, game, handleRecieved } = this.props
+        const { user, userGame, game } = this.props
         return (
             <div>
                 <h1>Game Container</h1>
                 <ActionCable
                     channel={'GamesChannel'}
                     room={game.id}
-                    onReceived={handleRecieved}
+                    onReceived={this.handleRecieved}
                 />
                 <div>
                     {this.mapOtherUserCards()}

@@ -103,17 +103,26 @@ export const getUserGameActionCreator = (userId) => {
 
 export const executeActionCreator = (action, game_id, user_game_id, room_id, target_id) => {
     console.log("EXECUTEACTIONCREATOR: ", action, game_id)
-    return dispatch => {
-        fetch(`${API_ROOT}/game_moves/${game_id}`, {
-            method: 'POST',
-            headers: HEADERS,
-            body: JSON.stringify({ action, user_game_id, target_id })
-        })
-            .then(res => res.json())
-            .then(userGame => {
-                dispatch(setUserGameActionCreator(userGame))
-                dispatch(getUserGamesActionCreator(room_id))
+    // If action is swap cards
+    if(action === 6) {
+        return dispatch => {
+            fetch(`${API_ROOT}/game_moves/${game_id}`)
+        }
+    } else {
+        // If action is not swap cards
+        return dispatch => {
+            fetch(`${API_ROOT}/game_moves/${game_id}`, {
+                method: 'POST',
+                headers: HEADERS,
+                body: JSON.stringify({ action, user_game_id, target_id })
             })
+                .then(res => res.json())
+                .then(userGame => {
+                    dispatch(setUserGameActionCreator(userGame))
+                    dispatch(getUserGamesActionCreator(room_id))
+                    dispatch(getGameActionCreator(room_id))
+                })
+        }
     }
 }
 export const handleGameMoveActionCreator = (gameMove) => ({ type: 'HANDLEGAMEMOVE', gameMove });
