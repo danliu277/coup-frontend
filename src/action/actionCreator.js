@@ -101,12 +101,17 @@ export const getUserGameActionCreator = (userId) => {
     }
 }
 
+export const setDrawnCardsActionCreator = drawnCards => ({ type: 'SETDRAWNCARDS', drawnCards })
 export const executeActionCreator = (action, game_id, user_game_id, room_id, target_id) => {
     console.log("EXECUTEACTIONCREATOR: ", action, game_id)
     // If action is swap cards
     if(action === 6) {
         return dispatch => {
-            fetch(`${API_ROOT}/game_moves/${game_id}`)
+            fetch(`${API_ROOT}/game_moves/${game_id}/draw_two`)
+                .then(res => res.json())
+                .then(cards => {
+                    dispatch(setDrawnCardsActionCreator(cards))
+                })
         }
     } else {
         // If action is not swap cards

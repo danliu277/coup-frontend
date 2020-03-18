@@ -4,7 +4,8 @@ let initialState = {
     game: null,
     rooms: [],
     userGames: [],
-    userGame: null
+    userGame: null,
+    drawnCards: []
 }
 
 const reducer = (prevState = initialState, action) => {
@@ -21,6 +22,8 @@ const reducer = (prevState = initialState, action) => {
             return { ...prevState, game: action.game }
         case 'SETUSERGAME':
             return { ...prevState, userGame: action.userGame }
+        case 'SETDRAWNCARDS':
+            return { ...prevState, drawnCards: action.drawnCards }
         case 'HANDLEGAMEMOVE':
             console.log(action)
             return { ...prevState }

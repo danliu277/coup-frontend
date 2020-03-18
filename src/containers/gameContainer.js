@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
 import { getUserGameActionCreator, getUserGamesActionCreator } from '../action/actionCreator';
 import ActionModal from '../components/actionModal';
+import SwapCardModal from '../components/swapCardModal';
 
 class GameContainer extends Component {
     state = {
         showAction: false,
+        showSwap: false,
         targetGame: null
     }
 
@@ -15,8 +17,10 @@ class GameContainer extends Component {
         this.props.getUserGames(this.props.room.id)
     }
 
-    handleRecieved = () => {
-        this.setState(() => ({ showAction: true }))
+    componentDidUpdate(prevProps) {
+        if (prevProps.drawnCards.length === 0 && this.props.drawnCards.length === 2) {
+            this.showSwap()
+        }
     }
 
     mapUserCards = () => {
@@ -39,7 +43,7 @@ class GameContainer extends Component {
         return ugs.map(userGame => {
             return <div id={userGame.id} key={userGame.id} onClick={() => this.selectTarget(userGame)}>
                 <div>
-                    {userGame.nickname} <br/>
+                    {userGame.nickname} <br />
                     Money: {userGame.money}
                 </div>
                 {this.mapCards(userGame.cards)}
@@ -55,12 +59,20 @@ class GameContainer extends Component {
         })
     }
 
-    showModal = () => {
+    showAction = () => {
         this.setState(() => ({ showAction: true }))
     }
 
     closeAction = () => {
         this.setState(() => ({ showAction: false }))
+    }
+
+    showSwap = () => {
+        this.setState(() => ({ showSwap: true }))
+    }
+
+    closeSwap = () => {
+        this.setState(() => ({ showSwap: false }))
     }
 
     render() {
@@ -71,7 +83,7 @@ class GameContainer extends Component {
                 <ActionCable
                     channel={'GamesChannel'}
                     room={game.id}
-                    onReceived={this.handleRecieved}
+                    onReceived={this.showAction}
                 />
                 <div>
                     {this.mapOtherUserCards()}
@@ -83,12 +95,16 @@ class GameContainer extends Component {
                         Target: {this.state.targetGame && this.state.targetGame.nickname}
                     </div>
                     {this.mapUserCards()}
-                    <button onClick={this.showModal}>Action</button>
+                    <button onClick={this.showAction}>Action</button>
                 </div>
                 <ActionModal
                     show={this.state.showAction}
                     handleClose={this.closeAction}
                     targetGame={this.state.targetGame} />
+                <SwapCardModal
+                    show={this.state.showSwap}
+                    handleClose={this.closeSwap}
+                />
             </div>
         )
     }
@@ -100,7 +116,8 @@ const msp = state => {
         userGame: state.userGame,
         userGames: state.userGames,
         room: state.room,
-        game: state.game
+        game: state.game,
+        drawnCards: state.drawnCards
     }
 }
 
