@@ -25,7 +25,6 @@ const reducer = (prevState = initialState, action) => {
         case 'SETDRAWNCARDS':
             return { ...prevState, drawnCards: action.drawnCards }
         case 'HANDLEGAMEMOVE':
-            console.log(action)
             return { ...prevState }
         default:
             return prevState

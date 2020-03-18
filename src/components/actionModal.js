@@ -26,7 +26,7 @@ class ActionModal extends Component {
         const { selectedAction } = this.state
         return options.map((option, index) => {
             return <li
-                className={selectedAction === index ? 'selected-action' : ''}
+                className={selectedAction === index ? 'selected' : ''}
                 key={index}
                 onClick={() => this.selectAction(index)}>
                 {option}

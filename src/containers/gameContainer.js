@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
-import { getUserGameActionCreator, getUserGamesActionCreator } from '../action/actionCreator';
+import { getUserGameActionCreator, getUserGamesActionCreator, setDrawnCardsActionCreator } from '../action/actionCreator';
 import ActionModal from '../components/actionModal';
 import SwapCardModal from '../components/swapCardModal';
 
@@ -26,7 +26,7 @@ class GameContainer extends Component {
     mapUserCards = () => {
         const { userGame } = this.props
         return userGame && userGame.cards.map(card => {
-            return <img id={card.id} className="coup-card" key={card.id} src={`${process.env.PUBLIC_URL}/${card.name}.png`} alt={card.name} />
+            return <img className="coup-card" key={card.id} src={`${process.env.PUBLIC_URL}/${card.name}.png`} alt={card.name} />
         })
     }
 
@@ -41,7 +41,7 @@ class GameContainer extends Component {
             ugs = ugs.filter(ug => ug.id !== userGame.id)
         }
         return ugs.map(userGame => {
-            return <div id={userGame.id} key={userGame.id} onClick={() => this.selectTarget(userGame)}>
+            return <div key={userGame.id} onClick={() => this.selectTarget(userGame)}>
                 <div>
                     {userGame.nickname} <br />
                     Money: {userGame.money}
@@ -54,7 +54,7 @@ class GameContainer extends Component {
     mapCards = (cards) => {
         return cards.map(card => {
             return <Fragment key={card.id}>
-                <img id={card.id} className="coup-card" src={`${process.env.PUBLIC_URL}/${card.name}.png`} alt={card.name} />
+                <img className="coup-card" src={`${process.env.PUBLIC_URL}/${card.name}.png`} alt={card.name} />
             </Fragment>
         })
     }
@@ -73,6 +73,7 @@ class GameContainer extends Component {
 
     closeSwap = () => {
         this.setState(() => ({ showSwap: false }))
+        this.props.setDrawnCards()
     }
 
     render() {
@@ -124,7 +125,8 @@ const msp = state => {
 const mdp = dispatch => {
     return {
         getUserGame: (userId) => dispatch(getUserGameActionCreator(userId)),
-        getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId))
+        getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId)),
+        setDrawnCards: () => dispatch(setDrawnCardsActionCreator([]))
     }
 }
 

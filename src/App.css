@@ -56,7 +56,7 @@
   justify-content: center;
 }
 
-.selected-action {
+.selected {
   /* list-style-position:inside; */
-  border: 1px solid black;
+  border: 2px solid blue;
 }
