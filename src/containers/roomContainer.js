@@ -6,13 +6,12 @@ import RoomPlayers from '../components/roomPlayers';
 import GameContainer from './gameContainer';
 
 const RoomContainer = props => {
-    const handleRecieved = () => {
-        props.getUserGames(props.room.id)
-    }
-
-    const handleStartRecieved = response => {
+    const handleRecieved = response => {
         const { game } = response
-        props.setGame(game)
+        if (game)
+            props.setGame(game)
+        else
+            props.getUserGames(props.room.id)
     }
 
     return (
@@ -23,11 +22,6 @@ const RoomContainer = props => {
                         channel={'RoomsChannel'}
                         room={{ id: props.room.id, user: props.user.id }}
                         onReceived={handleRecieved}
-                    />
-                    <ActionCable
-                        channel={'GamesChannel'}
-                        room={props.room.id}
-                        onReceived={handleStartRecieved}
                     />
                     {props.game ? <GameContainer /> : <RoomPlayers />}
                 </div>
