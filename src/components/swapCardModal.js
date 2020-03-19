@@ -48,10 +48,8 @@ class SwapCardModal extends Component {
         const { selectedDraw, selectedHand } = this.state
         const { executeAction, game, userGame } = this.props
         if (selectedDraw.length === selectedHand.length) {
-            if (selectedDraw.length !== 0 && selectedHand.length !== 0) {
-                executeAction(game.id, selectedHand, selectedDraw, userGame.id)
-                this.setState(() => ({ selectedDraw: [], selectedHand: [] }))
-            }
+            executeAction(game.id, selectedHand, selectedDraw, userGame.id)
+            this.setState(() => ({ selectedDraw: [], selectedHand: [] }))
             this.props.handleClose()
         }
     }

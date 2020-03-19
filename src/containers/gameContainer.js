@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
-import { getUserGameActionCreator, getUserGamesActionCreator, setDrawnCardsActionCreator } from '../action/actionCreator';
+import { getUserGameActionCreator, getUserGamesActionCreator, setDrawnCardsActionCreator, getGameActionCreator } from '../action/actionCreator';
 import ActionModal from '../components/actionModal';
 import SwapCardModal from '../components/swapCardModal';
 
@@ -77,8 +77,10 @@ class GameContainer extends Component {
     }
 
     handleRecieved = () => {
-        this.props.getUserGame(this.props.user.id)
-        this.props.getUserGames(this.props.room.id)
+        const {getUserGame, getUserGames, getGame, user, room} = this.props
+        getUserGame(user.id)
+        getUserGames(room.id)
+        getGame(room.id)
     }
 
     render() {
@@ -131,7 +133,8 @@ const mdp = dispatch => {
     return {
         getUserGame: (userId) => dispatch(getUserGameActionCreator(userId)),
         getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId)),
-        setDrawnCards: () => dispatch(setDrawnCardsActionCreator([]))
+        setDrawnCards: () => dispatch(setDrawnCardsActionCreator([])),
+        getGame: (roomId) => dispatch(getGameActionCreator(roomId))
     }
 }
 
