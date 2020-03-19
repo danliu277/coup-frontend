@@ -31,7 +31,8 @@ class GameContainer extends Component {
     }
 
     selectTarget = (targetGame) => {
-        this.setState(() => ({ targetGame }))
+        if(targetGame && targetGame.cards.length > 0)
+            this.setState(() => ({ targetGame }))
     }
 
     mapOtherUserCards = () => {
@@ -77,10 +78,21 @@ class GameContainer extends Component {
     }
 
     handleRecieved = () => {
-        const {getUserGame, getUserGames, getGame, user, room} = this.props
+        const { getUserGame, getUserGames, getGame, user, room } = this.props
         getUserGame(user.id)
         getUserGames(room.id)
         getGame(room.id)
+    }
+
+    winner = () => {
+        const { game, userGame } = this.props
+        if (userGame && game && game.winner_id === userGame.id) {
+            return 'Winner'
+        }
+        else if (userGame && userGame.cards.length === 0)
+            return 'Loser'
+        else
+            return null
     }
 
     render() {
@@ -88,6 +100,7 @@ class GameContainer extends Component {
         return (
             <div>
                 <h1>Game Container</h1>
+                <h3>{this.winner()}</h3>
                 <ActionCable
                     channel={'GamesChannel'}
                     room={game.id}
@@ -103,7 +116,7 @@ class GameContainer extends Component {
                         Target: {this.state.targetGame && this.state.targetGame.nickname}
                     </div>
                     {this.mapUserCards()}
-                    <button onClick={this.showAction} disabled={!game || !userGame || game.user_game_id !== userGame.id}>Action</button>
+                    <button onClick={this.showAction} disabled={!game || !userGame || game.winner_id || game.user_game_id !== userGame.id}>Action</button>
                 </div>
                 <ActionModal
                     show={this.state.showAction}
