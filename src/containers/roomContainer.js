@@ -1,17 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
-import { getUserGamesActionCreator, setGameActionCreator } from '../action/actionCreator';
+import { getUserGamesActionCreator, setGameActionCreator, getGameActionCreator } from '../action/actionCreator';
 import RoomPlayers from '../components/roomPlayers';
 import GameContainer from './gameContainer';
 
 const RoomContainer = props => {
     const handleRecieved = response => {
         const { game } = response
-        if (game)
+        if (game) {
             props.setGame(game)
-        else
+            props.getGame(props.room.id)
+        }
+        else {
             props.getUserGames(props.room.id)
+        }
     }
 
     return (
@@ -41,7 +44,8 @@ const msp = state => {
 const mdp = dispatch => {
     return {
         getUserGames: (roomId) => dispatch(getUserGamesActionCreator(roomId)),
-        setGame: (game) => dispatch(setGameActionCreator(game))
+        setGame: (game) => dispatch(setGameActionCreator(game)),
+        getGame: (roomId) => dispatch(getGameActionCreator(roomId))
     }
 }
 

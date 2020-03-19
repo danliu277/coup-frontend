@@ -76,7 +76,7 @@ class GameContainer extends Component {
         this.props.setDrawnCards()
     }
 
-    handleRecieved = response => {
+    handleRecieved = () => {
         this.props.getUserGame(this.props.user.id)
         this.props.getUserGames(this.props.room.id)
     }
@@ -101,7 +101,7 @@ class GameContainer extends Component {
                         Target: {this.state.targetGame && this.state.targetGame.nickname}
                     </div>
                     {this.mapUserCards()}
-                    <button onClick={this.showAction}>Action</button>
+                    <button onClick={this.showAction} disabled={!game || !userGame || game.user_game_id !== userGame.id}>Action</button>
                 </div>
                 <ActionModal
                     show={this.state.showAction}
