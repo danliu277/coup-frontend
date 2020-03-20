@@ -94,6 +94,9 @@ class GameContainer extends Component {
     handleRecieved = (response) => {
         const { game_move, message } = response
         const { getUserGame, getUserGames, getGame, user, room, userGame, setDrawnCards } = this.props
+        this.closeAction()
+        this.closeReaction()
+        this.closeSwap()
         if (game_move && game_move.user_game_id !== userGame.id) {
             console.log(game_move)
             this.setState(() => ({ gameMove: game_move }))

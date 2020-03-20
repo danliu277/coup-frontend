@@ -160,3 +160,13 @@ export const handleReactionActionCreator = (game_id, reaction, user_game_id) => 
         })
     }
 }
+
+export const handleCallBluffActionCreator = (game_id, user_game_id) => {
+    return dispatch => {
+        fetch(`${API_ROOT}/game_moves/${game_id}/call_bluff`, {
+            method: 'POST',
+            headers: HEADERS,
+            body: JSON.stringify({ user_game_id })
+        })
+    }
+}

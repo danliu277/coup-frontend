@@ -35,14 +35,14 @@ class ActionModal extends Component {
     }
 
     handleClose = () => {
-        this.setState(() => ({selectedAction: -1}))
+        this.setState(() => ({ selectedAction: -1 }))
         this.props.handleClose()
     }
 
     executeAction = () => {
-        const {selectedAction} = this.state
-        const {game, userGame, targetGame} = this.props
-        if(selectedAction >= 0) {
+        const { selectedAction } = this.state
+        const { game, userGame, targetGame } = this.props
+        if (selectedAction >= 0) {
             this.props.executeAction(selectedAction, game.id, userGame.id, game.room_id, targetGame && targetGame.id)
             this.handleClose()
         }
@@ -59,28 +59,6 @@ class ActionModal extends Component {
                     <ul>
                         {this.mapActions()}
                     </ul>
-                    {/* <h3>Normal Actions</h3>
-                    <ul>
-                        <li>Income (Take one coin fomr treasury)</li>
-                        <li>Foreign Aid (Take 2 coin from treasury)</li>
-                        <li>Coup (Pay 7 coins to force another player to lose influence</li>
-                    </ul>
-                    <h3>Duke</h3>
-                    <ul>
-                        <li>Take 3 coins from treasury</li>
-                    </ul>
-                    <h3>Assassin</h3>
-                    <ul>
-                        <li>Pay 3 coins to assassinate another players character</li>
-                    </ul>
-                    <h3>Captain</h3>
-                    <ul>
-                        <li>Take 3 coins from another player</li>
-                    </ul>
-                    <h3>Ambassador</h3>
-                    <ul>
-                        <li>Draw 2 cards and choose which (if any) you want to exchange</li>
-                    </ul> */}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={this.executeAction}>

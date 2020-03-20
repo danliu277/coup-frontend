@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { handleReactionActionCreator } from '../action/actionCreator'
+import { handleReactionActionCreator, handleCallBluffActionCreator } from '../action/actionCreator'
 
 class ReactionModal extends Component {
     getUserName = (id) => {
@@ -31,6 +31,8 @@ class ReactionModal extends Component {
                 return `as a CAPTAIN steals 2 coins from ${this.getUserName(gameMove.target_id)}`
             case 6:
                 return `as an AMBASSADOR draws 2 cards to swap`
+            case 7:
+                return ``
             default:
                 return ``
         }
@@ -39,6 +41,12 @@ class ReactionModal extends Component {
     executeAction = (reaction) => {
         const { game, userGame, handleClose } = this.props
         this.props.handleReaction(game.id, reaction, userGame.id)
+        handleClose()
+    }
+
+    callBluff = () => {
+        const { game, userGame, handleClose} = this.props
+        this.props.callBluff(game.id, userGame.id)
         handleClose()
     }
 
@@ -53,7 +61,7 @@ class ReactionModal extends Component {
                     {`${this.getUserName(gameMove && gameMove.user_game_id)} ${this.getAction()}`}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={() => this.executeAction(1)}>
+                    <Button variant="primary" onClick={() => this.callBluff()}>
                         Call Bluff
                     </Button>
                     <Button variant="primary" onClick={() => this.executeAction(2)}>
@@ -78,7 +86,8 @@ const msp = state => {
 
 const mdp = dispatch => {
     return {
-        handleReaction: (gameId, reaction, userGameId) => dispatch(handleReactionActionCreator(gameId, reaction, userGameId))
+        handleReaction: (gameId, reaction, userGameId) => dispatch(handleReactionActionCreator(gameId, reaction, userGameId)),
+        callBluff: (gameId, userGameId) => dispatch(handleCallBluffActionCreator(gameId, userGameId))
     }
 }
 
