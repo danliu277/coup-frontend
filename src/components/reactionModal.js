@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { handleReactionActionCreator, handleCallBluffActionCreator } from '../action/actionCreator'
+import { handleReactionActionCreator, handleCallBluffActionCreator, handleBlockActionCreator } from '../action/actionCreator'
 
 class ReactionModal extends Component {
     getUserName = (id) => {
@@ -20,7 +20,7 @@ class ReactionModal extends Component {
             case 0:
                 return `recieved 1 coin as income`
             case 1:
-                return `recieved 2 coin from foerign aid`
+                return `recieved 2 coin from foreign aid`
             case 2:
                 return `pays 7 coins to launch a coup against ${this.getUserName(gameMove.target_id)}`
             case 3:
@@ -32,7 +32,13 @@ class ReactionModal extends Component {
             case 6:
                 return `as an AMBASSADOR draws 2 cards to swap`
             case 7:
-                return ``
+                return `blocks ${this.getUserName(gameMove.target_id)} from recieving foreign aid`
+            case 8:
+                return `blocks ${this.getUserName(gameMove.target_id)} from assassinating`
+            case 9:
+                return `blocks ${this.getUserName(gameMove.target_id)} from stealing`
+            case 9:
+                return `blocks ${this.getUserName(gameMove.target_id)} from swapping`
             default:
                 return ``
         }
@@ -45,8 +51,14 @@ class ReactionModal extends Component {
     }
 
     callBluff = () => {
-        const { game, userGame, handleClose} = this.props
-        this.props.callBluff(game.id, userGame.id)
+        const { game, userGame, handleClose, callBluff} = this.props
+        callBluff(game.id, userGame.id)
+        handleClose()
+    }
+
+    block = () => {
+        const { game, userGame, handleClose, block} = this.props
+        block(game.id, userGame.id)
         handleClose()
     }
 
@@ -64,7 +76,7 @@ class ReactionModal extends Component {
                     <Button variant="primary" onClick={() => this.callBluff()}>
                         Call Bluff
                     </Button>
-                    <Button variant="primary" onClick={() => this.executeAction(2)}>
+                    <Button variant="primary" onClick={() => this.block()}>
                         Block
                     </Button>
                     <Button variant="primary" onClick={() => this.executeAction(0)}>
@@ -87,7 +99,8 @@ const msp = state => {
 const mdp = dispatch => {
     return {
         handleReaction: (gameId, reaction, userGameId) => dispatch(handleReactionActionCreator(gameId, reaction, userGameId)),
-        callBluff: (gameId, userGameId) => dispatch(handleCallBluffActionCreator(gameId, userGameId))
+        callBluff: (gameId, userGameId) => dispatch(handleCallBluffActionCreator(gameId, userGameId)),
+        block: (gameId, userGameId) => dispatch(handleBlockActionCreator(gameId, userGameId))
     }
 }
 
