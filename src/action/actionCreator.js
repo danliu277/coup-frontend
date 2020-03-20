@@ -104,29 +104,36 @@ export const getUserGameActionCreator = (userId) => {
 export const setDrawnCardsActionCreator = drawnCards => ({ type: 'SETDRAWNCARDS', drawnCards })
 export const executeActionCreator = (action, game_id, user_game_id, room_id, target_id) => {
     // If action is swap cards
-    if (action === 6) {
-        return dispatch => {
-            fetch(`${API_ROOT}/game_moves/${game_id}/draw_two`)
-                .then(res => res.json())
-                .then(cards => {
-                    dispatch(setDrawnCardsActionCreator(cards))
-                })
-        }
-    } else {
-        // If action is not swap cards
-        return dispatch => {
-            fetch(`${API_ROOT}/game_moves/${game_id}`, {
-                method: 'POST',
-                headers: HEADERS,
-                body: JSON.stringify({ action, user_game_id, target_id })
-            })
-                .then(res => res.json())
-                .then(userGame => {
-                    dispatch(setUserGameActionCreator(userGame))
-                    dispatch(getUserGamesActionCreator(room_id))
-                    dispatch(getGameActionCreator(room_id))
-                })
-        }
+    // if (action === 6) {
+    //     return dispatch => {
+    //         fetch(`${API_ROOT}/game_moves/${game_id}/draw_two`)
+    //             .then(res => res.json())
+    //             .then(cards => {
+    //                 dispatch(setDrawnCardsActionCreator(cards))
+    //             })
+    //     }
+    // } else {
+    //     // If action is not swap cards
+    //     return dispatch => {
+    //         fetch(`${API_ROOT}/game_moves/${game_id}`, {
+    //             method: 'POST',
+    //             headers: HEADERS,
+    //             body: JSON.stringify({ action, user_game_id, target_id })
+    //         })
+    //             .then(res => res.json())
+    //             .then(userGame => {
+    //                 dispatch(setUserGameActionCreator(userGame))
+    //                 dispatch(getUserGamesActionCreator(room_id))
+    //                 dispatch(getGameActionCreator(room_id))
+    //             })
+    //     }
+    // }
+    return dispatch => {
+        fetch(`${API_ROOT}/game_moves/${game_id}`, {
+            method: 'POST',
+            headers: HEADERS,
+            body: JSON.stringify({ action, user_game_id, target_id })
+        })
     }
 }
 export const swapCardsActionCreator = (game_id, selected_hand, selected_draw, user_game_id) => {
@@ -136,10 +143,20 @@ export const swapCardsActionCreator = (game_id, selected_hand, selected_draw, us
             headers: HEADERS,
             body: JSON.stringify({ game_id, selected_hand, selected_draw, user_game_id })
         })
-        .then(resp => resp.json())
-        .then(userGame => {
-            dispatch(setUserGameActionCreator(userGame))
-        })
+            .then(resp => resp.json())
+            .then(userGame => {
+                dispatch(setUserGameActionCreator(userGame))
+            })
     }
 }
 export const handleGameMoveActionCreator = (gameMove) => ({ type: 'HANDLEGAMEMOVE', gameMove });
+
+export const handleReactionActionCreator = (game_id, reaction, user_game_id) => {
+    return dispatch => {
+        fetch(`${API_ROOT}/game_moves/${game_id}/reaction`, {
+            method: 'POST',
+            headers: HEADERS,
+            body: JSON.stringify({ reaction, user_game_id })
+        })
+    }
+}

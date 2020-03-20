@@ -4,12 +4,15 @@ import { ActionCable } from 'actioncable-client-react'
 import { getUserGameActionCreator, getUserGamesActionCreator, setDrawnCardsActionCreator, getGameActionCreator } from '../action/actionCreator';
 import ActionModal from '../components/actionModal';
 import SwapCardModal from '../components/swapCardModal';
+import ReactionModal from '../components/reactionModal';
 
 class GameContainer extends Component {
     state = {
         showAction: false,
         showSwap: false,
-        targetGame: null
+        showReaction: false,
+        targetGame: null,
+        gameMove: null
     }
 
     componentDidMount() {
@@ -31,7 +34,7 @@ class GameContainer extends Component {
     }
 
     selectTarget = (targetGame) => {
-        if(targetGame && targetGame.cards.length > 0)
+        if (targetGame && targetGame.cards.length > 0)
             this.setState(() => ({ targetGame }))
     }
 
@@ -77,11 +80,26 @@ class GameContainer extends Component {
         this.props.setDrawnCards()
     }
 
-    handleRecieved = () => {
-        const { getUserGame, getUserGames, getGame, user, room } = this.props
-        getUserGame(user.id)
-        getUserGames(room.id)
-        getGame(room.id)
+    showReaction = () => {
+        this.setState(() => ({ showReaction: true}))
+    }
+
+    closeReaction = () => {
+        this.setState(() => ({ showReaction: false}))
+    }
+
+    handleRecieved = (response) => {
+        const { game_move } = response
+        if (game_move) {
+            console.log(game_move)
+            this.setState(() => ({gameMove: game_move}))
+            this.showReaction()
+        } else {
+            const { getUserGame, getUserGames, getGame, user, room } = this.props
+            getUserGame(user.id)
+            getUserGames(room.id)
+            getGame(room.id)
+        }
     }
 
     winner = () => {
@@ -97,6 +115,7 @@ class GameContainer extends Component {
 
     render() {
         const { user, userGame, game } = this.props
+        const { showAction, showSwap, showReaction, targetGame, gameMove } = this.state
         return (
             <div>
                 <h1>Game Container</h1>
@@ -113,18 +132,23 @@ class GameContainer extends Component {
                     <div>
                         {user.nickname} <br />
                         Money: {userGame && userGame.money} <br />
-                        Target: {this.state.targetGame && this.state.targetGame.nickname}
+                        Target: {targetGame && targetGame.nickname}
                     </div>
                     {this.mapUserCards()}
                     <button onClick={this.showAction} disabled={!game || !userGame || game.winner_id || game.user_game_id !== userGame.id}>Action</button>
                 </div>
                 <ActionModal
-                    show={this.state.showAction}
+                    show={showAction}
                     handleClose={this.closeAction}
-                    targetGame={this.state.targetGame} />
+                    targetGame={targetGame} />
                 <SwapCardModal
-                    show={this.state.showSwap}
+                    show={showSwap}
                     handleClose={this.closeSwap}
+                />
+                <ReactionModal
+                    show={showReaction}
+                    handleClose={this.closeReaction}
+                    gameMove={gameMove}
                 />
             </div>
         )
