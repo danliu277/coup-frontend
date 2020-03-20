@@ -37,8 +37,6 @@ class ReactionModal extends Component {
                 return `blocks ${this.getUserName(gameMove.target_id)} from assassinating`
             case 9:
                 return `blocks ${this.getUserName(gameMove.target_id)} from stealing`
-            case 10:
-                return `blocks ${this.getUserName(gameMove.target_id)} from swapping`
             default:
                 return ``
         }
@@ -65,9 +63,7 @@ class ReactionModal extends Component {
     allowBlock = () => {
         const { gameMove } = this.props
         if(gameMove) {
-            if(gameMove.action === 1)
-                return true
-            if(gameMove.action > 2 && gameMove.action < 7)
+            if(gameMove.action === 1 || gameMove.action === 3 || gameMove.action === 4 || gameMove.action === 5)
                 return true
         }
         return false
