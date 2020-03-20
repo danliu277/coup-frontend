@@ -1,8 +1,10 @@
 import React, { Fragment, Component } from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
-import { getUserGameActionCreator, getUserGamesActionCreator, setDrawnCardsActionCreator, 
-    getGameActionCreator } from '../action/actionCreator';
+import {
+    getUserGameActionCreator, getUserGamesActionCreator, setDrawnCardsActionCreator,
+    getGameActionCreator
+} from '../action/actionCreator';
 import ActionModal from '../components/actionModal';
 import SwapCardModal from '../components/swapCardModal';
 import ReactionModal from '../components/reactionModal';
@@ -82,23 +84,23 @@ class GameContainer extends Component {
     }
 
     showReaction = () => {
-        this.setState(() => ({ showReaction: true}))
+        this.setState(() => ({ showReaction: true }))
     }
 
     closeReaction = () => {
-        this.setState(() => ({ showReaction: false}))
+        this.setState(() => ({ showReaction: false }))
     }
 
     handleRecieved = (response) => {
         const { game_move, message } = response
-        if (game_move) {
+        const { getUserGame, getUserGames, getGame, user, room, userGame, setDrawnCards } = this.props
+        if (game_move && game_move.user_game_id !== userGame.id) {
             console.log(game_move)
-            this.setState(() => ({gameMove: game_move}))
+            this.setState(() => ({ gameMove: game_move }))
             this.showReaction()
-        } else if(message.user_game_id && message.drawn_cards && message.user_game_id === this.props.userGame.id) {
-            this.props.setDrawnCards(message.drawn_cards)
+        } else if (message && message.user_game_id && message.drawn_cards && message.user_game_id === userGame.id) {
+            setDrawnCards(message.drawn_cards)
         } else {
-            const { getUserGame, getUserGames, getGame, user, room } = this.props
             getUserGame(user.id)
             getUserGames(room.id)
             getGame(room.id)
