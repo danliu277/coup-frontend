@@ -37,7 +37,7 @@ class ReactionModal extends Component {
                 return `blocks ${this.getUserName(gameMove.target_id)} from assassinating`
             case 9:
                 return `blocks ${this.getUserName(gameMove.target_id)} from stealing`
-            case 9:
+            case 10:
                 return `blocks ${this.getUserName(gameMove.target_id)} from swapping`
             default:
                 return ``
@@ -51,15 +51,26 @@ class ReactionModal extends Component {
     }
 
     callBluff = () => {
-        const { game, userGame, handleClose, callBluff} = this.props
+        const { game, userGame, handleClose, callBluff } = this.props
         callBluff(game.id, userGame.id)
         handleClose()
     }
 
     block = () => {
-        const { game, userGame, handleClose, block} = this.props
+        const { game, userGame, handleClose, block } = this.props
         block(game.id, userGame.id)
         handleClose()
+    }
+
+    allowBlock = () => {
+        const { gameMove } = this.props
+        if(gameMove) {
+            if(gameMove.action === 1)
+                return true
+            if(gameMove.action > 2 && gameMove.action < 7)
+                return true
+        }
+        return false
     }
 
     render() {
@@ -73,12 +84,14 @@ class ReactionModal extends Component {
                     {`${this.getUserName(gameMove && gameMove.user_game_id)} ${this.getAction()}`}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={() => this.callBluff()}>
-                        Call Bluff
-                    </Button>
-                    <Button variant="primary" onClick={() => this.block()}>
-                        Block
-                    </Button>
+                    {gameMove && gameMove.action > 2 &&
+                        <Button variant="primary" onClick={() => this.callBluff()}>
+                            Call Bluff
+                    </Button>}
+                    {this.allowBlock() &&
+                        <Button variant="primary" onClick={() => this.block()}>
+                            Block
+                    </Button>}
                     <Button variant="primary" onClick={() => this.executeAction(0)}>
                         Pass
                     </Button>
