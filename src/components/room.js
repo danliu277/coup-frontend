@@ -2,10 +2,10 @@ import React from 'react'
 
 const Room = ({room, handleShowJoin}) => {
     return (
-        <div onClick={() => handleShowJoin(room)}>
-            <h3>{room.name} {room.password && `🔑`} {`${room.user_games}  / 6`}</h3>
-            <h6>Room Owner: {room.user && room.user.nickname}</h6>
-        </div>
+        <li className="list-group-item d-flex justify-content-between align-items-center" onClick={() => handleShowJoin(room)}>
+            {room.name} {room.password && `🔑`} {room.user && room.user.nickname}
+            <span class="badge badge-primary badge-pill">{`${room.user_games}  / 6`}</span>
+        </li>
     )
 }
 

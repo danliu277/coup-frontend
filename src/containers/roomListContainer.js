@@ -5,6 +5,7 @@ import Room from '../components/room';
 import CreateRoomModal from '../components/createRoomModal';
 import JoinRoomModal from '../components/joinRoomModal';
 import { getRoomsActionCreator, setRoomsActionCreator } from '../action/actionCreator';
+import { Button } from 'react-bootstrap';
 
 class RoomListContainer extends Component {
     state = {
@@ -53,13 +54,13 @@ class RoomListContainer extends Component {
         return (
             <>
                 {this.props.room ? <Redirect to={`/rooms/${this.props.room.id}`} /> :
-                        <div>
-                            <h1>Room List</h1>
-                            <button onClick={() => this.props.getRooms()}>Refresh</button>
-                            <div>
+                        <div className="background">
+                            <h1 className="display-2" style={{color: 'white'}}>Room List</h1>
+                            <Button onClick={() => this.props.getRooms()}>Refresh</Button>
+                            <ul className="list-group room-list">
                                 {this.mapRooms(this.props.rooms)}
-                            </div>
-                            <button onClick={this.handleShowCreate}>Create Room</button>
+                            </ul>
+                            <Button onClick={this.handleShowCreate}>Create Room</Button>
                             <CreateRoomModal
                                 show={this.state.showCreate}
                                 handleClose={this.handleCloseCreate}

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { pickNicknameActionCreator } from '../action/actionCreator'
-import { Row, Col, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
 class Register extends Component {
     state = {
@@ -21,11 +21,11 @@ class Register extends Component {
 
     render() {
         return (
-            <div className="register">
+            <div className="background register">
                 {
                     this.props.user ? <Redirect to="/rooms" /> :
                         <>
-                            <img className="title" src='https://img.pngio.com/coup-escooter-sharing-coup-png-1920_1080.png' />
+                            <img className="title" src='https://img.pngio.com/coup-escooter-sharing-coup-png-1920_1080.png' alt="coup-text" />
                             <br/>
                             <Form onSubmit={this.onSubmit}>
                                 <Form.Control type="text" placeholder="Nickname"
