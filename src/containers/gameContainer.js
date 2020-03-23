@@ -53,15 +53,16 @@ class GameContainer extends Component {
                     {userGame.nickname} <br />
                     Money: {userGame.money}
                 </div>
-                {this.mapCards(userGame.cards)}
+                {this.mapCards(userGame.cards, true)}
             </div>
         })
     }
 
-    mapCards = (cards) => {
+    mapCards = (cards, other = false) => {
         return cards.map(card => {
+            const image = other ? `${process.env.PUBLIC_URL}/card-back.png` : `${process.env.PUBLIC_URL}/${card.name}.png`
             return <Fragment key={card.id}>
-                <img className="coup-card" src={`${process.env.PUBLIC_URL}/${card.name}.png`} alt={card.name} />
+                <img className="coup-card" src={image} alt={card.name} />
             </Fragment>
         })
     }
