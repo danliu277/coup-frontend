@@ -24,22 +24,19 @@ class Register extends Component {
             <div className="register">
                 {
                     this.props.user ? <Redirect to="/rooms" /> :
-                    <Row className="justify-content-md-center">
-                        <Col md="auto">
-                            <div className="register-form">
-                                <h1>Coup</h1>
-                                <Form onSubmit={this.onSubmit}>
-                                    <Form.Control type="text" placeholder="Nickname"
-                                        name="nickname"
-                                        value={this.state.nickname}
-                                        onChange={this.updateValues} />
-                                    <Button variant="primary" type="submit">
-                                        Submit
-                                    </Button>
-                                </Form>
-                            </div>
-                        </Col>
-                    </Row>
+                        <>
+                            <img className="title" src='https://img.pngio.com/coup-escooter-sharing-coup-png-1920_1080.png' />
+                            <br/>
+                            <Form onSubmit={this.onSubmit}>
+                                <Form.Control type="text" placeholder="Nickname"
+                                    name="nickname"
+                                    value={this.state.nickname}
+                                    onChange={this.updateValues} />
+                                <Button variant="primary" type="submit">
+                                    Submit
+                                </Button>
+                            </Form>
+                        </>
                 }
             </div>
         )
