@@ -57,6 +57,5 @@
 }
 
 .selected {
-  /* list-style-position:inside; */
   border: 2px solid blue;
 }
