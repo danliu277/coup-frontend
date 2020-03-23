@@ -56,11 +56,13 @@ class RoomListContainer extends Component {
                 {this.props.room ? <Redirect to={`/rooms/${this.props.room.id}`} /> :
                         <div className="background">
                             <h1 className="display-2" style={{color: 'white'}}>Room List</h1>
-                            <Button onClick={() => this.props.getRooms()}>Refresh</Button>
+                            <div style={{marginBottom: '10px'}}>
+                                <Button onClick={() => this.props.getRooms()}>Refresh</Button>
+                                <Button onClick={this.handleShowCreate}>Create Room</Button>
+                            </div>
                             <ul className="list-group room-list">
                                 {this.mapRooms(this.props.rooms)}
                             </ul>
-                            <Button onClick={this.handleShowCreate}>Create Room</Button>
                             <CreateRoomModal
                                 show={this.state.showCreate}
                                 handleClose={this.handleCloseCreate}

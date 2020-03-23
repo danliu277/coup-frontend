@@ -20,7 +20,7 @@ const RoomContainer = props => {
     return (
         <>
             {
-                <div>
+                <div className="background">
                     <ActionCable
                         channel={'RoomsChannel'}
                         room={{ id: props.room.id, user: props.user.id }}
