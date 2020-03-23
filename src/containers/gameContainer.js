@@ -8,12 +8,15 @@ import {
 import ActionModal from '../components/actionModal';
 import SwapCardModal from '../components/swapCardModal';
 import ReactionModal from '../components/reactionModal';
+import DiscardModal from '../components/discardModal';
+import { Button } from 'react-bootstrap';
 
 class GameContainer extends Component {
     state = {
         showAction: false,
         showSwap: false,
         showReaction: false,
+        showDiscard: false,
         targetGame: null,
         gameMove: null
     }
@@ -92,6 +95,14 @@ class GameContainer extends Component {
         this.setState(() => ({ showReaction: false }))
     }
 
+    showDiscard = () => {
+        this.setState(() => ({ showDiscard: true }))
+    }
+
+    closeDiscard = () => {
+        this.setState(() => ({ showDiscard: false }))
+    }
+
     handleRecieved = (response) => {
         const { game_move, message } = response
         const { getUserGame, getUserGames, getGame, user, room, userGame, setDrawnCards } = this.props
@@ -124,9 +135,10 @@ class GameContainer extends Component {
 
     render() {
         const { user, userGame, game } = this.props
-        const { showAction, showSwap, showReaction, targetGame, gameMove } = this.state
+        const { showAction, showSwap, showReaction, targetGame, gameMove, showDiscard } = this.state
         return (
             <div>
+                <Button onClick={this.showDiscard}>Discard Pile</Button>
                 <h1>Game Container</h1>
                 <h3>{this.winner()}</h3>
                 <ActionCable
@@ -158,6 +170,10 @@ class GameContainer extends Component {
                     show={showReaction}
                     handleClose={this.closeReaction}
                     gameMove={gameMove}
+                />
+                <DiscardModal
+                    show={showDiscard}
+                    handleClose={this.closeDiscard}
                 />
             </div>
         )

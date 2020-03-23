@@ -59,3 +59,18 @@
 .selected {
   border: 2px solid blue;
 }
+
+.register {
+  background: url('https://static.vecteezy.com/system/resources/previews/000/566/456/non_2x/vector-abstract-background-technology-innovation-of-the-future.jpg');
+  height: 100vh;
+  width: 100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form {
+}

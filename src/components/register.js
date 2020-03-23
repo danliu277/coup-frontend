@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { pickNicknameActionCreator } from '../action/actionCreator'
+import { Row, Col, Button, Form } from 'react-bootstrap';
 
 class Register extends Component {
     state = {
@@ -20,22 +21,27 @@ class Register extends Component {
 
     render() {
         return (
-            <>
+            <div className="register">
                 {
                     this.props.user ? <Redirect to="/rooms" /> :
-                        <>
-                            <h1>Coup</h1>
-                            <form onSubmit={this.onSubmit}>
-                                <label>Nickname:</label>
-                                <input
-                                    name="nickname"
-                                    value={this.state.nickname}
-                                    onChange={this.updateValues} />
-                                <input type="submit" />
-                            </form>
-                        </>
+                    <Row className="justify-content-md-center">
+                        <Col md="auto">
+                            <div className="register-form">
+                                <h1>Coup</h1>
+                                <Form onSubmit={this.onSubmit}>
+                                    <Form.Control type="text" placeholder="Nickname"
+                                        name="nickname"
+                                        value={this.state.nickname}
+                                        onChange={this.updateValues} />
+                                    <Button variant="primary" type="submit">
+                                        Submit
+                                    </Button>
+                                </Form>
+                            </div>
+                        </Col>
+                    </Row>
                 }
-            </>
+            </div>
         )
     }
 }
