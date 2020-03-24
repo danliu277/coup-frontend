@@ -162,24 +162,24 @@ class GameContainer extends Component {
                         {this.mapUserCards()}
                         <button onClick={this.showAction} disabled={!game || !userGame || game.winner_id || game.user_game_id !== userGame.id}>Action</button>
                     </div> */}
-                    {(userGame ? userGames.sort((x,y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
-                    .map((n, index) => {
+                    {(userGame ? userGames.sort((x, y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
+                        .map((n, index) => {
 
-                        const x = 42 * Math.cos(playerAngle(index, userGames ? userGames.length - 1 : 0))
-                        const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length - 1 : 0)) + 10
+                            const x = 42 * Math.cos(playerAngle(index, userGames ? userGames.length - 1 : 0))
+                            const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length - 1 : 0)) + 10
 
-                        return (
-                            <Display
-                                key={n.id}
-                                x={x}
-                                y={y}
-                                name={n.nickname}
-                                money={n.money}
-                                buttons={index === 0 ? [{clickHandler: this.showAction, text: 'Action'}] : []
-                                }
-                            />
-                        )
-                    })}
+                            return (
+                                <Display
+                                    key={n.id}
+                                    x={x}
+                                    y={y}
+                                    name={n.nickname}
+                                    money={n.money}
+                                    buttons={index === 0 ? [{ clickHandler: this.showAction, text: 'Action' }] : []
+                                    }
+                                />
+                            )
+                        })}
                 </GameBoard>
                 <ActionModal
                     show={showAction}
@@ -232,8 +232,6 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
 
-    ${props => props.theme.centerChild}
-
     overflow: hidden;
 
 `
@@ -250,9 +248,7 @@ const GameBoard = styled.div`
     border: ${0.6 / 2}vw solid #E5829B;
     
     border-radius: 100%;
-    
-    transform-style: preserve-3d;
 
-    transform: perspective(800px) translateY(-4vw) rotateX(35deg);
+    transform: translateY(-4vw) rotateX(35deg);
     margin: 0 auto;
 `

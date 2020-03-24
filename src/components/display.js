@@ -30,9 +30,9 @@ const Container = styled.div`
     border: ${.6 / 2}vw solid #E5829B;
 
     borderRadius: border-radius: 0.8vw;,
-    centerChild: display: flex;
-                  justify-content: center;
-                  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     position: absolute;
     top: 50%;
@@ -40,14 +40,9 @@ const Container = styled.div`
 
     transform:
         translate(-50%, -50%)
-        translateZ(10vw)
         translateX(${props => props.x}vh)
         translateY(${props => props.y}vh)
-        rotateX(-50deg)
     ;
-
-    transform-style: preserve-3d;
-
 
     display: flex;
     flex-direction: column;
@@ -91,7 +86,7 @@ const Button = styled.button`
     font-size: 0.8vw;
 
     width: 4vw;
-    height: 100%;
+    height: 105%;
 
     margin: 0 0.3vw;
     padding: 0.2vw 0.4vw;
