@@ -19,14 +19,19 @@ class ActionModal extends Component {
     }
 
     selectAction = (option) => {
-        this.setState(() => ({ selectedAction: option }))
+        const { userGame } = this.props
+        if (userGame.money < 10 || (userGame.money >= 10 && option === 2))
+            this.setState(() => ({ selectedAction: option }))
     }
 
     mapActions = () => {
         const { selectedAction } = this.state
+        const { userGame } = this.props
         return options.map((option, index) => {
+            let className = selectedAction === index ? 'selected' : ''
+            className += index !== 2 && userGame && userGame.money >= 10 ? ' grey' : ''
             return <li
-                className={selectedAction === index ? 'selected' : ''}
+                className={className}
                 key={index}
                 onClick={() => this.selectAction(index)}>
                 {option}
