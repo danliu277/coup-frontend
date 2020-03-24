@@ -10,6 +10,8 @@ import SwapCardModal from '../components/swapCardModal';
 import ReactionModal from '../components/reactionModal';
 import DiscardModal from '../components/discardModal';
 import { Button } from 'react-bootstrap';
+import styled from 'styled-components'
+import Display from '../components/display'
 
 class GameContainer extends Component {
     state = {
@@ -134,30 +136,51 @@ class GameContainer extends Component {
     }
 
     render() {
-        const { user, userGame, game } = this.props
+        const { user, userGame, userGames, game } = this.props
         const { showAction, showSwap, showReaction, targetGame, gameMove, showDiscard } = this.state
+        console.log(this.props)
         return (
-            <div>
-                <Button onClick={this.showDiscard}>Discard Pile</Button>
-                <h1>Game Container</h1>
-                <h3>{this.winner()}</h3>
+            <Container>
                 <ActionCable
                     channel={'GamesChannel'}
                     room={game.id}
                     onReceived={this.handleRecieved}
                 />
-                <div>
-                    {this.mapOtherUserCards()}
-                </div>
-                <div className="user-cards">
+                <Button onClick={this.showDiscard}>Discard Pile</Button>
+                <GameBoard>
+                    {/* <h1>Game Container</h1>
+                    <h3>{this.winner()}</h3>
                     <div>
-                        {user.nickname} <br />
+                        {this.mapOtherUserCards()}
+                    </div>
+                    <div className="user-cards">
+                        <div>
+                            {user.nickname} <br />
                         Money: {userGame && userGame.money} <br />
                         Target: {targetGame && targetGame.nickname}
-                    </div>
-                    {this.mapUserCards()}
-                    <button onClick={this.showAction} disabled={!game || !userGame || game.winner_id || game.user_game_id !== userGame.id}>Action</button>
-                </div>
+                        </div>
+                        {this.mapUserCards()}
+                        <button onClick={this.showAction} disabled={!game || !userGame || game.winner_id || game.user_game_id !== userGame.id}>Action</button>
+                    </div> */}
+                    {(userGame ? userGames.sort((x,y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
+                    .map((n, index) => {
+
+                        const x = 42 * Math.cos(playerAngle(index, userGames ? userGames.length - 1 : 0))
+                        const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length - 1 : 0)) + 10
+
+                        return (
+                            <Display
+                                key={n.id}
+                                x={x}
+                                y={y}
+                                name={n.nickname}
+                                money={n.money}
+                                buttons={index === 0 ? [{clickHandler: this.showAction, text: 'Action'}] : []
+                                }
+                            />
+                        )
+                    })}
+                </GameBoard>
                 <ActionModal
                     show={showAction}
                     handleClose={this.closeAction}
@@ -175,7 +198,7 @@ class GameContainer extends Component {
                     show={showDiscard}
                     handleClose={this.closeDiscard}
                 />
-            </div>
+            </Container>
         )
     }
 }
@@ -201,3 +224,35 @@ const mdp = dispatch => {
 }
 
 export default connect(msp, mdp)(GameContainer)
+
+const playerAngle = (position, total) => ((2 * position * Math.PI) / (total + 1)) + (Math.PI / 2)
+
+const Container = styled.div`
+
+    width: 100%;
+    height: 100%;
+
+    ${props => props.theme.centerChild}
+
+    overflow: hidden;
+
+`
+
+const GameBoard = styled.div`
+
+    position: relative;
+
+    width: 98vh;
+    height: 98vh;
+
+    background: linear-gradient(20deg, #E5829Baa, #EABE77aa);
+
+    border: ${0.6 / 2}vw solid #E5829B;
+    
+    border-radius: 100%;
+    
+    transform-style: preserve-3d;
+
+    transform: perspective(800px) translateY(-4vw) rotateX(35deg);
+    margin: 0 auto;
+`
