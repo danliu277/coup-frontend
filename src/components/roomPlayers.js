@@ -10,7 +10,7 @@ const RoomPlayers = props => {
 
     const mapUserGames = () => {
         return props.userGames.map(userGame => {
-            return <div key={userGame.id}>
+            return <div key={userGame.id} className="white">
                 {props.room.user.id === userGame.user.id && '👑'}
                 {userGame.user && userGame.user.nickname}
             </div>
@@ -23,9 +23,9 @@ const RoomPlayers = props => {
 
     return (
         <>
-            <h1>{props.room && props.room.name}</h1>
+            <h1 className="display-3 white">{props.room && props.room.name}</h1>
             <button onClick={startGame}>Start Game</button>
-            <h6>Players:</h6>
+            <h6 className="display-6 white">Players:</h6>
             {mapUserGames()}
         </>
     )

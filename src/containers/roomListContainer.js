@@ -55,7 +55,7 @@ class RoomListContainer extends Component {
             <>
                 {this.props.room ? <Redirect to={`/rooms/${this.props.room.id}`} /> :
                         <div className="background">
-                            <h1 className="display-2" style={{color: 'white'}}>Room List</h1>
+                            <h1 className="display-2 white">Room List</h1>
                             <div style={{marginBottom: '10px'}}>
                                 <Button onClick={() => this.props.getRooms()}>Refresh</Button>
                                 <Button onClick={this.handleShowCreate}>Create Room</Button>
