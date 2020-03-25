@@ -118,16 +118,15 @@ class GameContainer extends Component {
                         .map((n, index) => {
                             const x = 42 * Math.cos(playerAngle(index, userGames ? userGames.length : 0))
                             const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length : 0))
-                            console.log(targetGame && targetGame.id, n.id)
                             return (
                                 <Display
                                     key={n.id}
                                     x={x}
                                     y={y}
-                                    userGame={userGame}
+                                    userGame={n}
                                     user={index === 0}
                                     game={game}
-                                    className={targetGame && targetGame.id === n.id && 'target'}
+                                    targetGame={targetGame}
                                     buttons={index === 0 ? [{ clickHandler: this.showAction, text: 'Action' }] : []}
                                     onClick={this.selectTarget}
                                 />

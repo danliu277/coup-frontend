@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import CardDisplay from './cardDisplay'
 
 export default class Display extends Component {
     render() {
-        const { x, y, userGame, user, onClick, game } = this.props
+        const { x, y, userGame, user, onClick, game, targetGame } = this.props
         return (
-            <Container onClick={() => onClick(userGame)} x={x} y={y}>
+            <Container onClick={() => onClick(userGame)} x={x} y={y} userGame={userGame} targetGame={targetGame}>
                 <CardDisplay cards={userGame && userGame.cards} user={user} />
                 <UserContainer>
                     <Name>{userGame && userGame.name}</Name>
@@ -42,6 +42,12 @@ const Container = styled.div`
         translateX(${props => props.x}vh)
         translateY(${props => props.y}vh)
     ;
+
+    ${props => props.targetGame && props.userGame && props.targetGame.id === props.userGame.id && target }
+`
+
+const target = css`
+    border: 3px solid red;
 `
 
 const UserContainer = styled.div`
