@@ -35,7 +35,7 @@ class GameContainer extends Component {
     }
 
     selectTarget = (targetGame) => {
-        if (targetGame && targetGame.cards.length > 0)
+        if (targetGame && targetGame.cards.length > 0 && targetGame.id !== this.props.userGame.id)
             this.setState(() => ({ targetGame }))
     }
 

@@ -42,7 +42,7 @@ class ReactionModal extends Component {
         }
     }
 
-    isBluff = () => {
+    isNotBluff = () => {
         const { userGame, gameMove } = this.props
         if (userGame && userGame.cards) {
             switch (gameMove) {
@@ -101,7 +101,7 @@ class ReactionModal extends Component {
                             Call Bluff
                     </Button>}
                     {this.allowBlock() &&
-                        <Button variant={this.isBluff() ? `danger` : `primary`} onClick={() => this.block()}>
+                        <Button variant={this.isNotBluff() ? `primary` : `danger`} onClick={() => this.block()}>
                             Block
                     </Button>}
                     <Button variant="primary" onClick={() => this.executeAction(0)}>
