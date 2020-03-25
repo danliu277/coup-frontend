@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { ActionCable } from 'actioncable-client-react'
 import {
@@ -12,7 +12,6 @@ import DiscardModal from '../components/discardModal';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components'
 import Display from '../components/display'
-import CardDisplay from '../components/cardDisplay'
 
 class GameContainer extends Component {
     state = {
@@ -35,42 +34,9 @@ class GameContainer extends Component {
         }
     }
 
-    mapUserCards = () => {
-        const { userGame } = this.props
-        return userGame && userGame.cards.map(card => {
-            return <img className="coup-card" key={card.id} src={`${process.env.PUBLIC_URL}/${card.name}.png`} alt={card.name} />
-        })
-    }
-
     selectTarget = (targetGame) => {
         if (targetGame && targetGame.cards.length > 0)
             this.setState(() => ({ targetGame }))
-    }
-
-    mapOtherUserCards = () => {
-        const { userGames, userGame } = this.props
-        let ugs = userGames
-        if (userGame) {
-            ugs = ugs.filter(ug => ug.id !== userGame.id)
-        }
-        return ugs.map(userGame => {
-            return <div key={userGame.id} onClick={() => this.selectTarget(userGame)}>
-                <div>
-                    {userGame.nickname} <br />
-                    Money: {userGame.money}
-                </div>
-                {this.mapCards(userGame.cards, true)}
-            </div>
-        })
-    }
-
-    mapCards = (cards, other = false) => {
-        return cards.map(card => {
-            const image = other ? `${process.env.PUBLIC_URL}/card-back.png` : `${process.env.PUBLIC_URL}/${card.name}.png`
-            return <Fragment key={card.id}>
-                <img className="coup-card" src={image} alt={card.name} />
-            </Fragment>
-        })
     }
 
     showAction = () => {
@@ -152,27 +118,20 @@ class GameContainer extends Component {
                     {(userGame ? userGames.sort((x, y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
                         .map((n, index) => {
 
-                            const x = 42 * Math.cos(playerAngle(index, userGames ? userGames.length - 1 : 0))
-                            const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length - 1 : 0)) + 10
+                            const x = 42 * Math.cos(playerAngle(index, userGames ? userGames.length : 0))
+                            const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length : 0)) + 10
 
                             return (
                                 <Display
                                     key={n.id}
                                     x={x}
                                     y={y}
-                                    name={n.nickname}
-                                    money={n.money}
+                                    userGame={userGame}
+                                    user={index === 0}
                                     buttons={index === 0 ? [{ clickHandler: this.showAction, text: 'Action' }] : []
                                     }
                                 />
                             )
-                        })}
-                    {(userGame ? userGames.sort((x, y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
-                        .map((userGame, userGameindex) => {
-                            const x = 42 * Math.cos(playerAngle(userGameindex, userGames ? userGames.length - 1 : 0))
-                            const y = 38 * Math.sin(playerAngle(userGameindex, userGames ? userGames.length - 1 : 0)) + 10
-
-                            return <CardDisplay key={userGame.id} cards={userGame.cards} x={x} y={y} user={userGameindex === 0}/>
                         })}
                 </GameBoard>
                 <ActionModal

@@ -50,8 +50,9 @@
 
 .coup-card {
   text-align: center;
-  width: 7.5vw;
+  width: 7.5vw; 
   height: 11vw;
+  /* Percentage width and height */
   display: inline-grid;
   justify-content: center;
 }

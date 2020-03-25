@@ -1,27 +1,50 @@
 import React, { Component } from 'react'
-
 import styled from 'styled-components'
+import CardDisplay from './cardDisplay'
 
-export default class DisplayCard extends Component {
+export default class Display extends Component {
     render() {
+        const { x, y, userGame, user } = this.props
         return (
-            <Container x={this.props.x} y={this.props.y}>
-                <Name>{this.props.name}</Name>
-                <Money><span role='img' aria-label="money">💰</span> {this.props.money}</Money>
-                <Row>
-                    {this.props.buttons.map((b, idx) => (
-                        <Button key={idx} onClick={b.clickHandler}>
-                            {b.text}
-                        </Button>
-                    ))}
-                </Row>
+            <Container x={x} y={y}>
+                <CardDisplay cards={userGame && userGame.cards} user={user} />
+                <UserContainer>
+                    <Name>{userGame && userGame.name}</Name>
+                    <Money><span role='img' aria-label="money">💰</span> {userGame && userGame.money}</Money>
+                    <Row>
+                        {this.props.buttons.map((b, idx) => (
+                            <Button key={idx} onClick={b.clickHandler}>
+                                {b.text}
+                            </Button>
+                        ))}
+                    </Row>
+                </UserContainer>
             </Container>
         )
     }
 }
 
-
 const Container = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    transform:
+        translate(-50%, -50%)
+        translateX(${props => props.x}vh)
+        translateY(${props => props.y}vh)
+    ;
+`
+
+const UserContainer = styled.div`
 
     background: #fff2eccc;
 
@@ -34,20 +57,13 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
 
-    position: absolute;
     top: 50%;
     left: 50%;
-
-    transform:
-        translate(-50%, -50%)
-        translateX(${props => props.x}vh)
-        translateY(${props => props.y}vh)
-    ;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    margin-top: 10px;
 `
 
 const Name = styled.h4`
