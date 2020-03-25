@@ -27,8 +27,31 @@ class ActionModal extends Component {
     mapActions = () => {
         const { selectedAction } = this.state
         const { userGame } = this.props
+        
         return options.map((option, index) => {
             let className = selectedAction === index ? 'selected' : ''
+            if (userGame && userGame.cards) {
+                switch (index) {
+                    case 3:
+                        if (!userGame.cards.some(card => card.name === 'Duke'))
+                            className += ' red'
+                        break;
+                    case 4:
+                        if (!userGame.cards.some(card => card.name === 'Assassin'))
+                            className += ' red'
+                        break;
+                    case 5:
+                        if (!userGame.cards.some(card => card.name === 'Captain'))
+                            className += ' red'
+                        break;
+                    case 6:
+                        if (!userGame.cards.some(card => card.name === 'Ambassador'))
+                            className += ' red'
+                        break;
+                    default:
+                        break;
+                }
+            }
             className += index !== 2 && userGame && userGame.money >= 10 ? ' grey' : ''
             return <li
                 className={className}
@@ -82,8 +105,7 @@ const msp = state => {
     return {
         user: state.user,
         game: state.game,
-        userGame: state.userGame,
-        userGames: state.userGames
+        userGame: state.userGame
     }
 }
 

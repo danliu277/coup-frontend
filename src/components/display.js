@@ -4,16 +4,16 @@ import CardDisplay from './cardDisplay'
 
 export default class Display extends Component {
     render() {
-        const { x, y, userGame, user } = this.props
+        const { x, y, userGame, user, onClick, game } = this.props
         return (
-            <Container x={x} y={y}>
+            <Container onClick={() => onClick(userGame)} x={x} y={y}>
                 <CardDisplay cards={userGame && userGame.cards} user={user} />
                 <UserContainer>
                     <Name>{userGame && userGame.name}</Name>
                     <Money><span role='img' aria-label="money">💰</span> {userGame && userGame.money}</Money>
                     <Row>
                         {this.props.buttons.map((b, idx) => (
-                            <Button key={idx} onClick={b.clickHandler}>
+                            <Button key={idx} onClick={b.clickHandler} disabled={game && userGame && game.user_game_id !== userGame.id}>
                                 {b.text}
                             </Button>
                         ))}

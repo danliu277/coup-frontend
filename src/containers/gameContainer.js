@@ -79,7 +79,6 @@ class GameContainer extends Component {
         this.closeReaction()
         this.closeSwap()
         if (game_move && game_move.user_game_id !== userGame.id) {
-            console.log(game_move)
             this.setState(() => ({ gameMove: game_move }))
             this.showReaction()
         } else if (message && message.user_game_id && message.drawn_cards && message.user_game_id === userGame.id) {
@@ -103,11 +102,11 @@ class GameContainer extends Component {
     }
 
     render() {
-        const { user, userGame, userGames, game } = this.props
+        const { userGame, userGames, game } = this.props
         const { showAction, showSwap, showReaction, targetGame, gameMove, showDiscard } = this.state
-        console.log(this.props)
         return (
             <Container>
+                {this.winner()}
                 <ActionCable
                     channel={'GamesChannel'}
                     room={game.id}
@@ -117,10 +116,9 @@ class GameContainer extends Component {
                 <GameBoard>
                     {(userGame ? userGames.sort((x, y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
                         .map((n, index) => {
-
                             const x = 42 * Math.cos(playerAngle(index, userGames ? userGames.length : 0))
-                            const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length : 0)) + 10
-
+                            const y = 38 * Math.sin(playerAngle(index, userGames ? userGames.length : 0))
+                            console.log(targetGame && targetGame.id, n.id)
                             return (
                                 <Display
                                     key={n.id}
@@ -128,8 +126,10 @@ class GameContainer extends Component {
                                     y={y}
                                     userGame={userGame}
                                     user={index === 0}
-                                    buttons={index === 0 ? [{ clickHandler: this.showAction, text: 'Action' }] : []
-                                    }
+                                    game={game}
+                                    className={targetGame && targetGame.id === n.id && 'target'}
+                                    buttons={index === 0 ? [{ clickHandler: this.showAction, text: 'Action' }] : []}
+                                    onClick={this.selectTarget}
                                 />
                             )
                         })}
@@ -178,7 +178,7 @@ const mdp = dispatch => {
 
 export default connect(msp, mdp)(GameContainer)
 
-const playerAngle = (position, total) => ((2 * position * Math.PI) / (total + 1)) + (Math.PI / 2)
+const playerAngle = (position, total) => ((2 * position * Math.PI) / (total)) + (Math.PI / 2)
 
 const Container = styled.div`
 

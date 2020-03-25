@@ -42,6 +42,22 @@ class ReactionModal extends Component {
         }
     }
 
+    isBluff = () => {
+        const { userGame, gameMove } = this.props
+        if (userGame && userGame.cards) {
+            switch (gameMove) {
+                case 1:
+                    return userGame.cards.some(card => card.name === 'Duke')
+                case 4:
+                    return userGame.cards.some(card => card.name === 'Contessa')
+                case 5:
+                    return userGame.cards.some(card => card.name === 'Captain' || card.name === 'Ambassador')
+                default:
+                    return false
+            }
+        }
+    }
+
     executeAction = (reaction) => {
         const { game, userGame, handleClose } = this.props
         this.props.handleReaction(game.id, reaction, userGame.id)
@@ -62,8 +78,8 @@ class ReactionModal extends Component {
 
     allowBlock = () => {
         const { gameMove } = this.props
-        if(gameMove) {
-            if(gameMove.action === 1 || gameMove.action === 3 || gameMove.action === 4 || gameMove.action === 5)
+        if (gameMove) {
+            if (gameMove.action === 1 || gameMove.action === 3 || gameMove.action === 4 || gameMove.action === 5)
                 return true
         }
         return false
@@ -85,7 +101,7 @@ class ReactionModal extends Component {
                             Call Bluff
                     </Button>}
                     {this.allowBlock() &&
-                        <Button variant="primary" onClick={() => this.block()}>
+                        <Button variant={this.isBluff() ? `danger` : `primary`} onClick={() => this.block()}>
                             Block
                     </Button>}
                     <Button variant="primary" onClick={() => this.executeAction(0)}>
