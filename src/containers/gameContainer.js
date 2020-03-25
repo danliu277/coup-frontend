@@ -93,10 +93,10 @@ class GameContainer extends Component {
     winner = () => {
         const { game, userGame } = this.props
         if (userGame && game && game.winner_id === userGame.id) {
-            return 'Winner'
+            return <img className='win-message' src='https://media.tenor.com/images/38d9e44e0b620f55b609d8503d1afd1d/tenor.gif' alt='winner' />
         }
         else if (userGame && userGame.cards.length === 0)
-            return 'Loser'
+            return <img className='win-message' src='https://i.gifer.com/1QWU.gif' alt='loser' />
         else
             return null
     }
@@ -204,3 +204,4 @@ const GameBoard = styled.div`
     transform: translateY(-4vw) rotateX(35deg);
     margin: 0 auto;
 `
+
