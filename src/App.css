@@ -44,14 +44,14 @@
 }
 
 .card-img {
-  max-width: 10rem;
-  max-height: 10rem;
+  max-width: 7.5vw;
+  max-height: 11vw;
 }
 
 .coup-card {
   text-align: center;
-  width: 10rem;
-  height: 13rem;
+  width: 7.5vw;
+  height: 11vw;
   display: inline-grid;
   justify-content: center;
 }

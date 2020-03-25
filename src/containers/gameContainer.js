@@ -12,6 +12,7 @@ import DiscardModal from '../components/discardModal';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components'
 import Display from '../components/display'
+import CardDisplay from '../components/cardDisplay'
 
 class GameContainer extends Component {
     state = {
@@ -148,20 +149,6 @@ class GameContainer extends Component {
                 />
                 <Button onClick={this.showDiscard}>Discard Pile</Button>
                 <GameBoard>
-                    {/* <h1>Game Container</h1>
-                    <h3>{this.winner()}</h3>
-                    <div>
-                        {this.mapOtherUserCards()}
-                    </div>
-                    <div className="user-cards">
-                        <div>
-                            {user.nickname} <br />
-                        Money: {userGame && userGame.money} <br />
-                        Target: {targetGame && targetGame.nickname}
-                        </div>
-                        {this.mapUserCards()}
-                        <button onClick={this.showAction} disabled={!game || !userGame || game.winner_id || game.user_game_id !== userGame.id}>Action</button>
-                    </div> */}
                     {(userGame ? userGames.sort((x, y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
                         .map((n, index) => {
 
@@ -179,6 +166,13 @@ class GameContainer extends Component {
                                     }
                                 />
                             )
+                        })}
+                    {(userGame ? userGames.sort((x, y) => { return x.id === userGame.id ? -1 : y.id === userGame.id ? 1 : 0; }) : userGames)
+                        .map((userGame, userGameindex) => {
+                            const x = 42 * Math.cos(playerAngle(userGameindex, userGames ? userGames.length - 1 : 0))
+                            const y = 38 * Math.sin(playerAngle(userGameindex, userGames ? userGames.length - 1 : 0)) + 10
+
+                            return <CardDisplay key={userGame.id} cards={userGame.cards} x={x} y={y} user={userGameindex === 0}/>
                         })}
                 </GameBoard>
                 <ActionModal
