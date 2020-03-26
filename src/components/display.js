@@ -5,7 +5,6 @@ import CardDisplay from './cardDisplay'
 export default class Display extends Component {
     render() {
         const { x, y, userGame, user, onClick, game, targetGame } = this.props
-        console.log(userGame, game)
         return (
             <Container onClick={() => onClick(userGame)} x={x} y={y} userGame={userGame} targetGame={targetGame} game={game}>
                 <CardDisplay cards={userGame && userGame.cards} user={user} />
