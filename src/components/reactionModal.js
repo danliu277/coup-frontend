@@ -79,7 +79,7 @@ class ReactionModal extends Component {
     allowBlock = () => {
         const { gameMove } = this.props
         if (gameMove) {
-            if (gameMove.action === 1 || gameMove.action === 3 || gameMove.action === 4 || gameMove.action === 5)
+            if (gameMove.action === 1 || gameMove.action === 4 || gameMove.action === 5)
                 return true
         }
         return false
