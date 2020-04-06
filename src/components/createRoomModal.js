@@ -42,6 +42,7 @@ class CreateRoomModal extends Component {
                             value={this.state.password}
                             onChange={this.updateValues}
                         />
+                        <button type="submit" hidden />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
